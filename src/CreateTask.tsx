@@ -1,3 +1,4 @@
+import { Input, Button, Flex } from "@chakra-ui/react";
 import { supabase } from "./supabaseClient";
 
 interface FormElements extends HTMLFormControlsCollection {
@@ -17,8 +18,12 @@ export default function CreateTask() {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <input name="title" id="taskTitleInput" placeholder="Task title" />
-        <button type="submit">Create Task</button>
+        <Flex>
+          <Input name="title" id="taskTitleInput" placeholder="Task title" />
+          <Button type="submit" ml={4}>
+            Create Task
+          </Button>
+        </Flex>
       </form>
     </>
   );

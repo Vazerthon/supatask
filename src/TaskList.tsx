@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
+import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 import { supabase } from "./supabaseClient";
 import { Task } from "./types/types";
 import CreateTask from "./CreateTask";
-import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 import constants from "./constants";
+
+import { ListItem, UnorderedList } from "@chakra-ui/react";
 
 function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -48,11 +50,11 @@ function TaskList() {
 
   return (
     <>
-      <ul>
+      <UnorderedList>
         {tasks.map((task) => (
-          <li key={task.id}>{task.title}</li>
+          <ListItem key={task.id}>{task.title}</ListItem>
         ))}
-      </ul>
+      </UnorderedList>
       <CreateTask />
     </>
   );
