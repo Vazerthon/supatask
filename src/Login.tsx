@@ -3,7 +3,7 @@ import { ThemeMinimal } from "@supabase/auth-ui-shared";
 import { Auth } from "@supabase/auth-ui-react";
 import { Button } from "@chakra-ui/react";
 import { supabase } from "./supabaseClient";
-import useSessionStore from "./state/useSessionStore";
+import useSessionStore from "./hooks/useSessionStore";
 
 export default function Login() {
   const { session, setSession } = useSessionStore();

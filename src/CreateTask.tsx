@@ -1,5 +1,7 @@
 import { Input, Button, Flex } from "@chakra-ui/react";
 import { supabase } from "./supabaseClient";
+import constants from "./constants";
+import useTasks from "./hooks/useTasks";
 
 interface FormElements extends HTMLFormControlsCollection {
   taskTitleInput: HTMLInputElement;
@@ -9,11 +11,12 @@ interface CreateTaskFormElement extends HTMLFormElement {
 }
 
 export default function CreateTask() {
+  const { addTask } = useTasks();
+
   const handleSubmit = async (e: React.FormEvent<CreateTaskFormElement>) => {
     e.preventDefault();
-    console.log(e.currentTarget.elements);
     const title = e.currentTarget.elements.taskTitleInput.value;
-    await supabase.from("task").insert([{ title }]);
+    await addTask(title);
   };
   return (
     <>
