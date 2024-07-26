@@ -5,10 +5,9 @@ import {
   getWeek,
   getYear,
   startOfToday,
+  format,
 } from "date-fns";
 import { Completion, Task } from "../types/types";
-
-const today = startOfToday();
 
 interface TaskState {
   tasks: Task[];
@@ -24,8 +23,10 @@ interface TaskState {
   month: string;
   year: string;
   frequencyPeriod: Record<"daily" | "weekly" | "monthly" | "yearly", string>;
+  frequencyLabel: Record<"daily" | "weekly" | "monthly" | "yearly", string>;
 }
 
+const today = startOfToday();
 const day = `day-${getDayOfYear(today)}-${getYear(today)}`;
 const week = `week-${getWeek(today)}-${getYear(today)}`;
 const month = `month-${getMonth(today)}-${getYear(today)}`;
@@ -69,6 +70,12 @@ const useTaskStore = create<TaskState>((set) => ({
     weekly: week,
     monthly: month,
     yearly: year,
+  },
+  frequencyLabel: {
+    daily: `To do today, ${format(today, "MMMM do")}`,
+    weekly: `To do week ${getWeek(today)} of ${getYear(today)}`,
+    monthly: `To do in ${format(today, "MMMM yyyy")}`,
+    yearly: `To do in ${getYear(today)}`,
   },
 }));
 

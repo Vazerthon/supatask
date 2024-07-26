@@ -1,5 +1,4 @@
 import {
-  ListItem,
   Stack,
   Flex,
   Tab,
@@ -8,13 +7,13 @@ import {
   TabPanels,
   Tabs,
   UnorderedList,
+  Text,
 } from "@chakra-ui/react";
-import CreateTask from "./CreateTask";
 import useTaskStore from "./hooks/useTaskStore";
 import TaskListItem from "./TaskListItem";
 
 function TaskList() {
-  const { tasks, frequencies, setFrequency } = useTaskStore();
+  const { tasks, frequencies, setFrequency, frequencyLabel } = useTaskStore();
 
   const handleTabChange = (index: number) => {
     setFrequency(frequencies[index]);
@@ -34,6 +33,9 @@ function TaskList() {
           <TabPanels>
             {frequencies.map((frequency) => (
               <TabPanel key={frequency}>
+                <Text as="h1" fontSize="large">
+                  {frequencyLabel[frequency]}
+                </Text>
                 <UnorderedList>
                   {tasks.map((task) => (
                     <TaskListItem item={task} key={task.id} />
@@ -44,7 +46,6 @@ function TaskList() {
           </TabPanels>
         </Stack>
       </TabList>
-      <CreateTask />
     </Tabs>
   );
 }

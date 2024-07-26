@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { ThemeMinimal } from "@supabase/auth-ui-shared";
 import { Auth } from "@supabase/auth-ui-react";
-import { Button } from "@chakra-ui/react";
+
 import { supabase } from "./supabaseClient";
 import useSessionStore from "./hooks/useSessionStore";
 
@@ -32,6 +32,6 @@ export default function Login() {
       />
     );
   } else {
-    return <Button onClick={() => supabase.auth.signOut()}>Sign out</Button>;
+    return null;
   }
 }
