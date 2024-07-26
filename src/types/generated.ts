@@ -34,18 +34,53 @@ export type Database = {
   };
   public: {
     Tables: {
+      completion: {
+        Row: {
+          complete: boolean;
+          id: string;
+          period: string;
+          task_id: string;
+          user_id: string;
+        };
+        Insert: {
+          complete?: boolean;
+          id?: string;
+          period: string;
+          task_id: string;
+          user_id?: string;
+        };
+        Update: {
+          complete?: boolean;
+          id?: string;
+          period?: string;
+          task_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "task-completion_taskId_fkey";
+            columns: ["task_id"];
+            isOneToOne: false;
+            referencedRelation: "task";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
       task: {
         Row: {
+          frequency: Database["public"]["Enums"]["frequency"];
           id: string;
           title: string | null;
           user_id: string | null;
         };
         Insert: {
+          frequency?: Database["public"]["Enums"]["frequency"];
           id?: string;
           title?: string | null;
           user_id?: string | null;
         };
         Update: {
+          frequency?: Database["public"]["Enums"]["frequency"];
           id?: string;
           title?: string | null;
           user_id?: string | null;
@@ -68,7 +103,7 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
-      [_ in never]: never;
+      frequency: "daily" | "weekly" | "monthly" | "yearly";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -350,6 +385,10 @@ export type Database = {
           metadata: Json;
           updated_at: string;
         }[];
+      };
+      operation: {
+        Args: Record<PropertyKey, never>;
+        Returns: string;
       };
       search: {
         Args: {

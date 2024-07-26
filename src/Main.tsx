@@ -7,7 +7,7 @@ import {
   theme as chakraTheme,
 } from "@chakra-ui/react";
 
-const { Button, List, Input, Tabs } = chakraTheme.components;
+const { Button, List, Input, Tabs, Checkbox } = chakraTheme.components;
 
 const theme = extendBaseTheme({
   components: {
@@ -15,6 +15,7 @@ const theme = extendBaseTheme({
     List,
     Input,
     Tabs,
+    Checkbox,
   },
 });
 

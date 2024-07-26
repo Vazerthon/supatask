@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import CreateTask from "./CreateTask";
 import useTaskStore from "./hooks/useTaskStore";
+import TaskListItem from "./TaskListItem";
 
 function TaskList() {
   const { tasks, frequencies, setFrequency } = useTaskStore();
@@ -35,9 +36,7 @@ function TaskList() {
               <TabPanel key={frequency}>
                 <UnorderedList>
                   {tasks.map((task) => (
-                    <ListItem
-                      key={task.id}
-                    >{`${task.title} - ${task.completion.length}`}</ListItem>
+                    <TaskListItem item={task} key={task.id} />
                   ))}
                 </UnorderedList>
               </TabPanel>
