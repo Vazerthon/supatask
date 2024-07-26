@@ -73,7 +73,7 @@ const useTaskStore = create<TaskState>((set) => ({
   },
   frequencyLabel: {
     daily: `To do today, ${format(today, "MMMM do")}`,
-    weekly: `To do week ${getWeek(today)} of ${getYear(today)}`,
+    weekly: `To do in week ${getWeek(today)} of ${getYear(today)}`,
     monthly: `To do in ${format(today, "MMMM yyyy")}`,
     yearly: `To do in ${getYear(today)}`,
   },
