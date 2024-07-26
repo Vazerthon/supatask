@@ -40,6 +40,16 @@ function TaskList() {
                   {tasks.map((task) => (
                     <TaskListItem item={task} key={task.id} />
                   ))}
+                  {tasks.length === 0 && (
+                    <Flex
+                      width="100%"
+                      minHeight="70vh"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <Text fontSize="xl">Nothing to do 🎉</Text>
+                    </Flex>
+                  )}
                 </UnorderedList>
               </TabPanel>
             ))}
