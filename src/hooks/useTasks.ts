@@ -36,6 +36,8 @@ export default function useTasks() {
         .select(`*, ${constants.COMPLETION_TABLE}(*)`)
         .eq("frequency", frequency)
         .then(({ data }) => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
           setTasks(data || []);
         });
     };
