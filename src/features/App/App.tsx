@@ -1,8 +1,8 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import Login from "./Login";
-import useSessionStore from "./features/tasks/components/useSessionStore";
-import Logout from "./Logout";
-import Tasks from "./features/tasks/Tasks";
+import Login from "./components/Login";
+import useSessionStore from "../tasks/components/useSessionStore";
+import Logout from "./components/Logout";
+import Tasks from "../tasks/Tasks";
 
 function App() {
   const { session } = useSessionStore();

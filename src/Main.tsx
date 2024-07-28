@@ -7,7 +7,8 @@ import {
   theme as chakraTheme,
 } from "@chakra-ui/react";
 
-const { Button, List, Input, Tabs, Checkbox, Popover } = chakraTheme.components;
+const { Button, List, Input, Tabs, Checkbox, Popover, Drawer } =
+  chakraTheme.components;
 
 const theme = extendBaseTheme({
   components: {
@@ -17,10 +18,11 @@ const theme = extendBaseTheme({
     Tabs,
     Checkbox,
     Popover,
+    Drawer,
   },
 });
 
-import App from "./App.tsx";
+import App from "./features/App/App.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

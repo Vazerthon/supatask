@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
-import { supabase } from "./supabaseClient";
-import useSessionStore from "./features/tasks/components/useSessionStore";
+import { supabase } from "../../../supabaseClient";
+import useSessionStore from "../../tasks/components/useSessionStore";
 
 export default function Logout() {
   const { session } = useSessionStore();
