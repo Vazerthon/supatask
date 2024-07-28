@@ -1,9 +1,8 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Login from "./Login";
-import useSessionStore from "./hooks/useSessionStore";
-import TaskList from "./TaskList";
-import CreateTask from "./CreateTask";
+import useSessionStore from "./features/tasks/components/useSessionStore";
 import Logout from "./Logout";
+import Tasks from "./features/tasks/Tasks";
 
 function App() {
   const { session } = useSessionStore();
@@ -16,8 +15,7 @@ function App() {
             <Text>Get stuff done!</Text>
             <Logout />
           </Flex>
-          <TaskList />
-          <CreateTask />
+          <Tasks />
         </>
       )}
       <Login />

@@ -11,8 +11,8 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { AddIcon, CheckIcon } from "@chakra-ui/icons";
-import useTasks from "./hooks/useTasks";
-import useTaskStore from "./hooks/useTaskStore";
+import useTasks from "./useTasks";
+import useTaskStore from "../../../hooks/useTaskStore";
 import { useRef, useState } from "react";
 
 interface FormElements extends HTMLFormControlsCollection {

@@ -1,11 +1,14 @@
 import { useCallback, useEffect } from "react";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
-import useTaskStore from "../hooks/useTaskStore";
-import { supabase } from "../supabaseClient";
-import constants from "../constants";
-import { Completion, Task } from "../types/types";
+import useTaskStore from "../../hooks/useTaskStore";
+import { supabase } from "../../supabaseClient";
+import constants from "../../constants";
+import { Completion, Task } from "../../types/types";
 
-export default function useTasks() {
+import TaskList from "./components/TaskList";
+import CreateTask from "./components/CreateTask";
+
+export default function Tasks() {
   const {
     setTasks,
     frequency,
@@ -20,13 +23,6 @@ export default function useTasks() {
       completion: task.completion || [],
     }),
     []
-  );
-
-  const addTask = useCallback(
-    async (title: string) => {
-      await supabase.from(constants.TASKS_TABLE).insert({ title, frequency });
-    },
-    [frequency]
   );
 
   useEffect(() => {
@@ -87,7 +83,7 @@ export default function useTasks() {
     subscribeToCompletionChanges();
 
     return unsubscribe;
-  }, [addTaskToStore, frequency, makeTaskFromPayload]);
+  }, [addCompletionToTask, addTaskToStore, frequency, updateCompletionForTask]);
 
   useEffect(() => {
     const handleTaskInserts = (
@@ -122,7 +118,10 @@ export default function useTasks() {
     return unsubscribe;
   }, [addTaskToStore, frequency, makeTaskFromPayload]);
 
-  return {
-    addTask,
-  };
+  return (
+    <>
+      <TaskList />
+      <CreateTask />
+    </>
+  );
 }
