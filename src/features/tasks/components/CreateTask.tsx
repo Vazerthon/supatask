@@ -1,15 +1,16 @@
 import {
+  useDisclosure,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerBody,
+  DrawerFooter,
   Input,
   Flex,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverArrow,
-  PopoverCloseButton,
   IconButton,
+  DrawerHeader,
 } from "@chakra-ui/react";
+
 import { AddIcon, CheckIcon } from "@chakra-ui/icons";
 import useTasks from "./useTasks";
 import useTaskStore from "../../../hooks/useTaskStore";
@@ -23,6 +24,9 @@ interface CreateTaskFormElement extends HTMLFormElement {
 }
 
 export default function CreateTask() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = useRef(null);
+
   const { addTask } = useTasks();
   const { frequency } = useTaskStore();
   const [inputText, setInputText] = useState("");
@@ -39,39 +43,50 @@ export default function CreateTask() {
     setInputText("");
   };
   return (
-    <Popover initialFocusRef={initialFocusRef}>
-      <PopoverTrigger>
-        <IconButton
-          position="fixed"
-          bottom={8}
-          right={8}
-          aria-label="Add a new task"
-        >
-          <AddIcon />
-        </IconButton>
-      </PopoverTrigger>
-      <PopoverContent>
-        <PopoverArrow />
-        <PopoverCloseButton />
-        <PopoverHeader>{`Add new ${frequency} task`}</PopoverHeader>
-        <PopoverBody>
+    <>
+      <IconButton
+        position="fixed"
+        bottom={8}
+        right={8}
+        aria-label="Add a new task"
+        ref={btnRef}
+        onClick={onOpen}
+      >
+        <AddIcon />
+      </IconButton>
+
+      <Drawer
+        isOpen={isOpen}
+        placement="right"
+        isFullHeight
+        onClose={onClose}
+        finalFocusRef={btnRef}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader>Create a new {frequency} task</DrawerHeader>
           <form onSubmit={handleSubmit}>
-            <Flex>
-              <Input
-                ref={initialFocusRef}
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                name="title"
-                id="taskTitleInput"
-                placeholder={`New ${frequency} task title`}
-              />
+            <DrawerBody>
+              <Flex>
+                <Input
+                  ref={initialFocusRef}
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  name="title"
+                  id="taskTitleInput"
+                  placeholder={`New ${frequency} task title`}
+                />
+              </Flex>
+            </DrawerBody>
+
+            <DrawerFooter>
               <IconButton type="submit" ml={4} aria-label="Submit new task">
                 <CheckIcon />
               </IconButton>
-            </Flex>
+            </DrawerFooter>
           </form>
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
+        </DrawerContent>
+      </Drawer>
+    </>
   );
 }
