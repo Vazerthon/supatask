@@ -22,7 +22,7 @@ const theme = extendBaseTheme({
   },
 });
 
-import App from "./features/App/App.tsx";
+import App from "./features/app/App.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

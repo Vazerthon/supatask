@@ -36,7 +36,6 @@ export default function Menu() {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerBody></DrawerBody>
-
           <DrawerFooter>
             <Logout />
           </DrawerFooter>
