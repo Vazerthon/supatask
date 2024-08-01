@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import Login from "./components/Login";
-import useSessionStore from "../tasks/components/useSessionStore";
+import useSessionStore from "../../hooks/useSessionStore";
 import Tasks from "../tasks/Tasks";
 import Menu from "./components/Menu";
 

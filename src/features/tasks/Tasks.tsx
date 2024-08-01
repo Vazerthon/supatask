@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
-import useTaskStore from "../../hooks/useTaskStore";
+import useTaskStore from "./useTaskStore";
 import { supabase } from "../../supabaseClient";
 import constants from "../../constants";
 import { Completion, Task } from "../../types/types";

@@ -7,7 +7,7 @@ import {
   startOfToday,
   format,
 } from "date-fns";
-import { Completion, Task } from "../types/types";
+import { Completion, Task } from "../../types/types";
 
 interface TaskState {
   tasks: Task[];

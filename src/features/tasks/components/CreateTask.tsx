@@ -13,7 +13,7 @@ import {
 
 import { AddIcon, CheckIcon } from "@chakra-ui/icons";
 import useTasks from "./useTasks";
-import useTaskStore from "../../../hooks/useTaskStore";
+import useTaskStore from "../useTaskStore";
 import { useRef, useState } from "react";
 
 interface FormElements extends HTMLFormControlsCollection {

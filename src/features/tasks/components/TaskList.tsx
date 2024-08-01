@@ -9,7 +9,7 @@ import {
   UnorderedList,
   Text,
 } from "@chakra-ui/react";
-import useTaskStore from "../../../hooks/useTaskStore";
+import useTaskStore from "../useTaskStore";
 import TaskListItem from "./TaskListItem";
 
 function TaskList() {

@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import useTaskStore from "../../../hooks/useTaskStore";
+import useTaskStore from "../useTaskStore";
 import { supabase } from "../../../supabaseClient";
 import constants from "../../../constants";
 import { Completion, Task } from "../../../types/types";

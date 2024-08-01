@@ -1,6 +1,6 @@
 import { Checkbox, ListItem, Text } from "@chakra-ui/react";
 import { Task } from "../../../types/types";
-import useTaskStore from "../../../hooks/useTaskStore";
+import useTaskStore from "../useTaskStore";
 import useTasks from "./useTasks";
 
 type TaskListItemProps = {
