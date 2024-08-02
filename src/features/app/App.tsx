@@ -3,6 +3,7 @@ import Login from "./components/Login";
 import useSessionStore from "../../hooks/useSessionStore";
 import Tasks from "../tasks/Tasks";
 import Menu from "./components/Menu";
+import Labels from "../labels/Labels";
 
 function App() {
   const { session } = useSessionStore();
@@ -10,7 +11,12 @@ function App() {
   return (
     <>
       <Box m={4} p={4}>
-        {!!session && <Tasks />}
+        {!!session && (
+          <>
+            <Tasks />
+            <Labels />
+          </>
+        )}
         <Login />
         <Menu />
       </Box>

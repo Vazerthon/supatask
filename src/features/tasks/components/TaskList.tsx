@@ -8,6 +8,7 @@ import {
   Tabs,
   UnorderedList,
   Text,
+  CheckboxGroup,
 } from "@chakra-ui/react";
 import useTaskStore from "../useTaskStore";
 import TaskListItem from "./TaskListItem";
@@ -37,9 +38,11 @@ function TaskList() {
                   {frequencyLabel[frequency]}
                 </Text>
                 <UnorderedList>
-                  {tasks.map((task) => (
-                    <TaskListItem item={task} key={task.id} />
-                  ))}
+                  <CheckboxGroup>
+                    {tasks.map((task) => (
+                      <TaskListItem item={task} key={task.id} />
+                    ))}
+                  </CheckboxGroup>
                   {tasks.length === 0 && (
                     <Flex
                       width="100%"

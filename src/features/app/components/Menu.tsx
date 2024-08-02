@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import Logout from "./Logout";
+import LabelList from "../../labels/LabelList";
 
 export default function Menu() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -35,7 +36,9 @@ export default function Menu() {
       >
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerBody></DrawerBody>
+          <DrawerBody>
+            <LabelList />
+          </DrawerBody>
           <DrawerFooter>
             <Logout />
           </DrawerFooter>

@@ -66,6 +66,27 @@ export type Database = {
           }
         ];
       };
+      label: {
+        Row: {
+          color_hex: string;
+          id: string;
+          text: string;
+          user_id: string;
+        };
+        Insert: {
+          color_hex: string;
+          id?: string;
+          text: string;
+          user_id?: string;
+        };
+        Update: {
+          color_hex?: string;
+          id?: string;
+          text?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       task: {
         Row: {
           frequency: Database["public"]["Enums"]["frequency"];
@@ -91,6 +112,42 @@ export type Database = {
             columns: ["user_id"];
             isOneToOne: false;
             referencedRelation: "users";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
+      task_label: {
+        Row: {
+          id: string;
+          label_id: string;
+          task_id: string;
+          user_id: string;
+        };
+        Insert: {
+          id?: string;
+          label_id: string;
+          task_id: string;
+          user_id?: string;
+        };
+        Update: {
+          id?: string;
+          label_id?: string;
+          task_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "task_label_label_id_fkey";
+            columns: ["label_id"];
+            isOneToOne: false;
+            referencedRelation: "label";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "task_label_task_id_fkey";
+            columns: ["task_id"];
+            isOneToOne: false;
+            referencedRelation: "task";
             referencedColumns: ["id"];
           }
         ];
