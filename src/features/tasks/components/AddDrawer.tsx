@@ -1,38 +1,37 @@
-import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   useDisclosure,
   Drawer,
   DrawerOverlay,
   DrawerContent,
   DrawerBody,
-  DrawerFooter,
   IconButton,
   Flex,
-  Box,
 } from "@chakra-ui/react";
-import { useRef } from "react";
-import Logout from "./Logout";
-import LabelList from "../../labels/LabelList";
-import CreateLabel from "../../labels/CreateLabel";
 
-export default function Menu() {
+import { AddIcon } from "@chakra-ui/icons";
+import { useRef } from "react";
+import CreateTask from "../CreateTask";
+
+export default function AddDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef(null);
+
   return (
     <>
       <IconButton
-        ref={btnRef}
-        onClick={onOpen}
-        aria-label="open main menu"
         position="fixed"
         bottom={8}
-        left={8}
+        right={8}
+        aria-label="Add new items"
+        ref={btnRef}
+        onClick={onOpen}
       >
-        <HamburgerIcon />
+        <AddIcon />
       </IconButton>
+
       <Drawer
         isOpen={isOpen}
-        placement="left"
+        placement="right"
         isFullHeight
         onClose={onClose}
         finalFocusRef={btnRef}
@@ -41,14 +40,9 @@ export default function Menu() {
         <DrawerContent>
           <DrawerBody>
             <Flex flexDirection="column">
-              <LabelList />
-              <Box as="hr" m={4} />
-              <CreateLabel />
+              <CreateTask />
             </Flex>
           </DrawerBody>
-          <DrawerFooter>
-            <Logout />
-          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>

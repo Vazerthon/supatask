@@ -6,6 +6,7 @@ interface LabelState {
   setLabels: (labels: Label[]) => void;
   enableLabel: (labelId: string) => void;
   disableLabel: (labelId: string) => void;
+  addLabel: (label: Label) => void;
 }
 
 const enableAll = (label: Label) => ({ ...label, enabled: true });
@@ -25,6 +26,7 @@ const useLabelStore = create<LabelState>((set) => ({
         label.id === labelId ? { ...label, enabled: false } : label
       ),
     })),
+  addLabel: (label) => set((state) => ({ labels: [...state.labels, label] })),
 }));
 
 export default useLabelStore;

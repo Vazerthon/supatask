@@ -6,7 +6,7 @@ import constants from "../../constants";
 import { Completion, Task } from "../../types/types";
 
 import TaskList from "./components/TaskList";
-import CreateTask from "./components/CreateTask";
+import AddDrawer from "./components/AddDrawer";
 
 export default function Tasks() {
   const {
@@ -121,7 +121,7 @@ export default function Tasks() {
   return (
     <>
       <TaskList />
-      <CreateTask />
+      <AddDrawer />
     </>
   );
 }
