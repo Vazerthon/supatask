@@ -21,6 +21,7 @@ export default function Tasks() {
     (task: Task): Task => ({
       ...task,
       completion: task.completion || [],
+      task_label: task.task_label || [],
     }),
     []
   );
@@ -29,7 +30,9 @@ export default function Tasks() {
     const getTasks = () => {
       supabase
         .from(constants.TASKS_TABLE)
-        .select(`*, ${constants.COMPLETION_TABLE}(*)`)
+        .select(
+          `*, ${constants.COMPLETION_TABLE}(*), ${constants.TASK_LABEL_TABLE}(*)`
+        )
         .eq("frequency", frequency)
         .then(({ data }) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment

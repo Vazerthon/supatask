@@ -1,7 +1,8 @@
-import { Checkbox, ListItem, Text } from "@chakra-ui/react";
+import { Checkbox, Grid, ListItem, Text } from "@chakra-ui/react";
 import { Task } from "../../../types/types";
 import useTaskStore from "../useTaskStore";
 import useTasks from "./useTasks";
+import TaskLabelList from "../../labels/TaskLabelList";
 
 type TaskListItemProps = {
   item: Task;
@@ -34,7 +35,10 @@ export default function TaskListItem({ item }: TaskListItemProps) {
         isChecked={isChecked}
         onChange={handleCheckboxChange}
       >
-        <Text ml={1}>{item.title}</Text>
+        <Grid templateColumns="auto 1fr" gap={2}>
+          <Text ml={1}>{item.title}</Text>
+          <TaskLabelList task={item} />
+        </Grid>
       </Checkbox>
     </ListItem>
   );
