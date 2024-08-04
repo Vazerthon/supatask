@@ -1,14 +1,19 @@
 import { Input, Flex, IconButton, Text } from "@chakra-ui/react";
 
 import { CheckIcon } from "@chakra-ui/icons";
-import useTasks from "./components/useTasks";
-import useTaskStore from "./useTaskStore";
+import useTasks from "./useTasks";
+import useTaskStore from "../useTaskStore";
 import { useRef, useState } from "react";
+import { Label } from "../../../types/types";
+import SelectLabels from "../../labels/SelectLabels";
 
 export default function CreateTask() {
   const { addTask } = useTasks();
   const { frequency } = useTaskStore();
   const [inputText, setInputText] = useState("");
+  const [selectedLabels, setSelectedLabels] = useState<Label[]>(
+    new Array<Label>()
+  );
 
   const initialFocusRef = useRef(null);
 
@@ -19,7 +24,9 @@ export default function CreateTask() {
     }
     e.preventDefault();
     await addTask(title);
+
     setInputText("");
+    setSelectedLabels(new Array<Label>());
   };
   return (
     <>
@@ -35,6 +42,11 @@ export default function CreateTask() {
             name="title"
             id="taskTitleInput"
             placeholder={`New ${frequency} task title`}
+          />
+          <SelectLabels
+            selectedLabels={selectedLabels}
+            onSelectionChange={setSelectedLabels}
+            mt={2}
           />
         </Flex>
 

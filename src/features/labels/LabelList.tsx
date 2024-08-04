@@ -2,7 +2,7 @@ import {
   Badge,
   Checkbox,
   CheckboxGroup,
-  Flex,
+  Grid,
   List,
   ListItem,
   Text,
@@ -29,24 +29,22 @@ export default function LabelList() {
         <CheckboxGroup>
           {labels.map((label) => (
             <ListItem key={label.id}>
-              <Flex alignItems="center">
-                <Checkbox
-                  isChecked={label.enabled}
-                  onChange={() =>
-                    handleCheckboxChange(label.id, !label.enabled)
-                  }
-                  flexGrow={1}
-                >
+              <Checkbox
+                isChecked={label.enabled}
+                onChange={() => handleCheckboxChange(label.id, !label.enabled)}
+              >
+                <Grid templateColumns="auto 1fr" gap={2}>
                   <Text noOfLines={1}>{label.text}</Text>
-                </Checkbox>
-                <Badge
-                  w={4}
-                  h={4}
-                  minW={4}
-                  borderRadius="50%"
-                  backgroundColor={label.color_hex}
-                />
-              </Flex>
+
+                  <Badge
+                    w={4}
+                    h={4}
+                    borderRadius="50%"
+                    backgroundColor={label.color_hex}
+                    alignSelf="center"
+                  />
+                </Grid>
+              </Checkbox>
             </ListItem>
           ))}
         </CheckboxGroup>

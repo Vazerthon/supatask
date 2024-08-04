@@ -10,7 +10,7 @@ import {
 
 import { AddIcon } from "@chakra-ui/icons";
 import { useRef } from "react";
-import CreateTask from "../CreateTask";
+import CreateTask from "./CreateTask";
 
 export default function AddDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
