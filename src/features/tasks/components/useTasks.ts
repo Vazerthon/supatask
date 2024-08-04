@@ -5,7 +5,7 @@ import constants from "../../../constants";
 import { Completion, Label, Task } from "../../../types/types";
 
 export default function useTasks() {
-  const { frequency, frequencyPeriod } = useTaskStore();
+  const { frequency, frequencyPeriod, setTaskLabelsForTask } = useTaskStore();
 
   const createTaskLabels = useCallback(
     async (taskId: Task["id"], labels: Label[]) => {
@@ -51,8 +51,24 @@ export default function useTasks() {
     [frequency, frequencyPeriod]
   );
 
+  const getTaskLabelsForTask = useCallback(
+    (taskId: string) => {
+      supabase
+        .from(constants.TASK_LABEL_TABLE)
+        .select()
+        .eq("task_id", taskId)
+        .then(({ data }) => {
+          if (data) {
+            setTaskLabelsForTask(taskId, data);
+          }
+        });
+    },
+    [setTaskLabelsForTask]
+  );
+
   return {
     addTask,
     toggleTaskCompletion,
+    getTaskLabelsForTask,
   };
 }

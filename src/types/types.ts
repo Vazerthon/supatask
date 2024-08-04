@@ -8,3 +8,4 @@ export type Task = Database["public"]["Tables"]["task"]["Row"] & {
 export type Label = Database["public"]["Tables"]["label"]["Row"] & {
   enabled: boolean;
 };
+export type TaskLabel = Database["public"]["Tables"]["task_label"]["Row"];

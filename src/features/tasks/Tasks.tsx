@@ -7,6 +7,7 @@ import { Completion, Task } from "../../types/types";
 
 import TaskList from "./components/TaskList";
 import AddDrawer from "./components/AddDrawer";
+import useTasks from "./components/useTasks";
 
 export default function Tasks() {
   const {
@@ -16,6 +17,8 @@ export default function Tasks() {
     addCompletionToTask,
     updateCompletionForTask,
   } = useTaskStore();
+
+  const { getTaskLabelsForTask } = useTasks();
 
   const makeTaskFromPayload = useCallback(
     (task: Task): Task => ({
@@ -94,6 +97,7 @@ export default function Tasks() {
     ) => {
       if (payload.eventType === "INSERT" && payload.new) {
         addTaskToStore(makeTaskFromPayload(payload.new));
+        getTaskLabelsForTask(payload.new.id);
       }
     };
     const channel = "task-changes";

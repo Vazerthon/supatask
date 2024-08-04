@@ -7,7 +7,7 @@ import {
   startOfToday,
   format,
 } from "date-fns";
-import { Completion, Task } from "../../types/types";
+import { Completion, Task, TaskLabel } from "../../types/types";
 
 interface TaskState {
   tasks: Task[];
@@ -15,6 +15,7 @@ interface TaskState {
   addTask: (task: Task) => void;
   addCompletionToTask: (taskId: Task["id"], completion: Completion) => void;
   updateCompletionForTask: (taskId: Task["id"], completion: Completion) => void;
+  setTaskLabelsForTask: (taskId: Task["id"], labels: TaskLabel[]) => void;
   frequencies: ["daily", "weekly", "monthly", "yearly"];
   frequency: "daily" | "weekly" | "monthly" | "yearly";
   setFrequency: (frequency: "daily" | "weekly" | "monthly" | "yearly") => void;
@@ -57,6 +58,13 @@ const useTaskStore = create<TaskState>((set) => ({
           : task
       ),
     })),
+  setTaskLabelsForTask: (taskId, labels) => {
+    set((state) => ({
+      tasks: state.tasks.map((task) =>
+        task.id === taskId ? { ...task, task_label: labels } : task
+      ),
+    }));
+  },
   frequencies: ["daily", "weekly", "monthly", "yearly"],
   frequency: "daily",
   setFrequency: (frequency: "daily" | "weekly" | "monthly" | "yearly") =>
