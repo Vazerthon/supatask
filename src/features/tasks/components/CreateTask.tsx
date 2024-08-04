@@ -51,7 +51,12 @@ export default function CreateTask() {
         </Flex>
 
         <Flex flexDirection="row" justifyContent="flex-end">
-          <IconButton type="submit" mt={2} aria-label="Submit new task">
+          <IconButton
+            type="submit"
+            mt={2}
+            aria-label="Submit new task"
+            isDisabled={!inputText.trim()}
+          >
             <CheckIcon />
           </IconButton>
         </Flex>

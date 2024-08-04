@@ -1,5 +1,4 @@
 import { Input, Flex, IconButton, Text } from "@chakra-ui/react";
-
 import { CheckIcon } from "@chakra-ui/icons";
 import { useRef, useState } from "react";
 import useLabels from "./useLabels";
@@ -48,7 +47,12 @@ export default function CreateLabel() {
         </Flex>
 
         <Flex flexDirection="row" justifyContent="flex-end">
-          <IconButton type="submit" mt={2} aria-label="Submit new task">
+          <IconButton
+            type="submit"
+            mt={2}
+            aria-label="Submit new label"
+            isDisabled={!inputText.trim()}
+          >
             <CheckIcon />
           </IconButton>
         </Flex>
