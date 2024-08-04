@@ -15,10 +15,10 @@ function App() {
           <>
             <Tasks />
             <Labels />
+            <Menu />
           </>
         )}
         <Login />
-        <Menu />
       </Box>
     </>
   );
