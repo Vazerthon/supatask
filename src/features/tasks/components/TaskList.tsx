@@ -22,11 +22,12 @@ function TaskList() {
     setFrequency(frequencies[index]);
   };
 
-  const hiddenByFiltersCount = tasks.length - filteredTasks.length;
+  const totalTasksCount = tasks.length;
+  const hiddenByFiltersCount = totalTasksCount - filteredTasks.length;
 
   return (
     <Tabs onChange={handleTabChange}>
-      <TabList mb={2}>
+      <TabList mb={2} border="none">
         <Stack width="100%">
           <Flex>
             {frequencies.map((frequency) => (
