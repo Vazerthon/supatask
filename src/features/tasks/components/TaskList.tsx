@@ -15,12 +15,14 @@ import TaskListItem from "./TaskListItem";
 import useSharedState from "../../useSharedState";
 
 function TaskList() {
-  const { frequencies, setFrequency, frequencyLabel } = useTaskStore();
+  const { tasks, frequencies, setFrequency, frequencyLabel } = useTaskStore();
   const { filteredTasks } = useSharedState();
 
   const handleTabChange = (index: number) => {
     setFrequency(frequencies[index]);
   };
+
+  const hiddenByFiltersCount = tasks.length - filteredTasks.length;
 
   return (
     <Tabs onChange={handleTabChange}>
@@ -38,6 +40,12 @@ function TaskList() {
               <TabPanel key={frequency}>
                 <Text as="h1" fontSize="large">
                   {frequencyLabel[frequency]}
+                  {hiddenByFiltersCount > 0 && (
+                    <Text as="span" fontSize="small" ml={2}>
+                      ({hiddenByFiltersCount} task
+                      {hiddenByFiltersCount === 1 ? "" : "s"} hidden)
+                    </Text>
+                  )}
                 </Text>
                 <UnorderedList>
                   <CheckboxGroup>
