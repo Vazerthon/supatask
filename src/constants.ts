@@ -1,13 +1,13 @@
 const TASKS_TABLE = "task";
 const COMPLETION_TABLE = "completion";
 const LABEL_TABLE = "label";
-const LABEL_TASK_TABLE = "label_task";
+const TASK_LABEL_TABLE = "task_label";
 
 const constants = {
   TASKS_TABLE,
   LABEL_TABLE,
   COMPLETION_TABLE,
-  LABEL_TASK_TABLE,
+  TASK_LABEL_TABLE,
 };
 
 export default constants;

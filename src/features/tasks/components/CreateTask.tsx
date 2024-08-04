@@ -23,7 +23,7 @@ export default function CreateTask() {
       return;
     }
     e.preventDefault();
-    await addTask(title);
+    await addTask(title, selectedLabels);
 
     setInputText("");
     setSelectedLabels(new Array<Label>());
