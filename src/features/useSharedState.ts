@@ -11,7 +11,7 @@ export default function useSharedState() {
     {}
   );
 
-  const unlabelledEnabled = labelsDict["unlabelled"].enabled;
+  const unlabelledEnabled = labelsDict["unlabelled"]?.enabled;
 
   const filteredTasks = tasks.filter((task) => {
     const taskHasNoLabels = task.task_label.length === 0;
