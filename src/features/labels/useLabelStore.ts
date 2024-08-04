@@ -16,7 +16,19 @@ const disableAll = (label: Label) => ({ ...label, enabled: false });
 
 const useLabelStore = create<LabelState>((set) => ({
   labels: [],
-  setLabels: (labels) => set({ labels: labels.map(enableAll) }),
+  setLabels: (labels) =>
+    set({
+      labels: [
+        {
+          id: "unlabelled",
+          text: "Unlabelled",
+          color_hex: "#ffffff",
+          enabled: true,
+          user_id: "",
+        },
+        ...labels.map(enableAll),
+      ],
+    }),
   enableLabel: (labelId) =>
     set((state) => ({
       labels: state.labels.map((label) =>

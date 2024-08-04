@@ -12,9 +12,11 @@ import {
 } from "@chakra-ui/react";
 import useTaskStore from "../useTaskStore";
 import TaskListItem from "./TaskListItem";
+import useSharedState from "../../useSharedState";
 
 function TaskList() {
-  const { tasks, frequencies, setFrequency, frequencyLabel } = useTaskStore();
+  const { frequencies, setFrequency, frequencyLabel } = useTaskStore();
+  const { filteredTasks } = useSharedState();
 
   const handleTabChange = (index: number) => {
     setFrequency(frequencies[index]);
@@ -39,11 +41,11 @@ function TaskList() {
                 </Text>
                 <UnorderedList>
                   <CheckboxGroup>
-                    {tasks.map((task) => (
+                    {filteredTasks.map((task) => (
                       <TaskListItem item={task} key={task.id} />
                     ))}
                   </CheckboxGroup>
-                  {tasks.length === 0 && (
+                  {filteredTasks.length === 0 && (
                     <Flex
                       width="100%"
                       minHeight="70vh"

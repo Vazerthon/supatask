@@ -23,6 +23,10 @@ export default function SelectLabels({
 }: SelectLabelsProps) {
   const { labels } = useLabelStore();
 
+  const labelsWithoutUnlabelled = labels.filter(
+    (label) => label.id !== "unlabelled"
+  );
+
   const handleAddLabel = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (!e.target.value) {
       return;
@@ -32,7 +36,7 @@ export default function SelectLabels({
       Array.from(
         new Set([
           ...selectedLabels,
-          labels.find((label) => label.id === e.target.value)!,
+          labelsWithoutUnlabelled.find((label) => label.id === e.target.value)!,
         ])
       )
     );
@@ -78,7 +82,7 @@ export default function SelectLabels({
         </>
       )}
       <Select placeholder="Select labels" mt={2} onChange={handleAddLabel}>
-        {labels.map((label) => (
+        {labelsWithoutUnlabelled.map((label) => (
           <option key={label.id} value={label.id}>
             {label.text}
           </option>
