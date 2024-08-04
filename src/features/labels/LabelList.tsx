@@ -6,11 +6,15 @@ import {
   List,
   ListItem,
   Text,
+  Flex,
 } from "@chakra-ui/react";
 import useLabelStore from "./useLabelStore";
 
 export default function LabelList() {
-  const { labels, enableLabel, disableLabel } = useLabelStore();
+  const { labels, enableLabel, disableLabel, enableAll, disableAll } =
+    useLabelStore();
+
+  const allEnabled = labels.every((label) => label.enabled);
 
   const handleCheckboxChange = (labelId: string, enabled: boolean) => {
     if (enabled) {
@@ -22,9 +26,16 @@ export default function LabelList() {
 
   return (
     <>
-      <Text fontSize="lg" fontWeight="bold">
-        Labels
-      </Text>
+      <Flex>
+        <Checkbox
+          isChecked={allEnabled}
+          onChange={allEnabled ? disableAll : enableAll}
+          mr={2}
+        />
+        <Text fontSize="lg" fontWeight="bold">
+          Filter by labels
+        </Text>
+      </Flex>
       <List>
         <CheckboxGroup>
           {labels.map((label) => (

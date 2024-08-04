@@ -7,9 +7,12 @@ interface LabelState {
   enableLabel: (labelId: string) => void;
   disableLabel: (labelId: string) => void;
   addLabel: (label: Label) => void;
+  enableAll: () => void;
+  disableAll: () => void;
 }
 
 const enableAll = (label: Label) => ({ ...label, enabled: true });
+const disableAll = (label: Label) => ({ ...label, enabled: false });
 
 const useLabelStore = create<LabelState>((set) => ({
   labels: [],
@@ -27,6 +30,8 @@ const useLabelStore = create<LabelState>((set) => ({
       ),
     })),
   addLabel: (label) => set((state) => ({ labels: [...state.labels, label] })),
+  enableAll: () => set((state) => ({ labels: state.labels.map(enableAll) })),
+  disableAll: () => set((state) => ({ labels: state.labels.map(disableAll) })),
 }));
 
 export default useLabelStore;
