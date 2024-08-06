@@ -21,12 +21,7 @@ export default function LabelBadge({ label, ...badgeProps }: LabelBadgeProps) {
       fontSize="xs"
       {...badgeProps}
     >
-      <Text
-        color={label.color_hex}
-        sx={{
-          filter: "invert(100%)",
-        }}
-      >
+      <Text color={label.color_hex} filter="invert(100%)">
         {label.text[0]}
       </Text>
     </Badge>
