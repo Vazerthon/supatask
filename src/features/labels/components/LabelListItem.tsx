@@ -1,4 +1,4 @@
-import { Checkbox, Grid, ListItem, Text } from "@chakra-ui/react";
+import { Checkbox, Flex, Grid, ListItem, Text } from "@chakra-ui/react";
 import useLabelStore from "../useLabelStore";
 import { Label } from "../../../types/types";
 import LabelBadge from "./LabelBadge";
@@ -27,11 +27,22 @@ export default function LabelListItem({
       <Checkbox
         isChecked={label.enabled}
         onChange={() => handleCheckboxChange(label.id, !label.enabled)}
+        w="100%"
+        sx={{
+          // is there a good way to do this? I dunno
+          ".chakra-checkbox__label": {
+            width: "100%",
+          },
+        }}
       >
         <Grid templateColumns="auto 1fr" gap={2}>
           <Text noOfLines={1}>{label.text}</Text>
 
-          {!hideBadge && <LabelBadge label={label} />}
+          {!hideBadge && (
+            <Flex flexDirection="row-reverse">
+              <LabelBadge label={label} />
+            </Flex>
+          )}
         </Grid>
       </Checkbox>
     </ListItem>

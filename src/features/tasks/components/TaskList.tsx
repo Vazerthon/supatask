@@ -50,8 +50,12 @@ function TaskList() {
                 </Text>
                 <UnorderedList>
                   <CheckboxGroup>
-                    {filteredTasks.map((task) => (
-                      <TaskListItem item={task} key={task.id} />
+                    {filteredTasks.map((task, i) => (
+                      <TaskListItem
+                        item={task}
+                        key={task.id}
+                        backgroundColor={i % 2 === 0 ? "gray.50" : "white"}
+                      />
                     ))}
                   </CheckboxGroup>
                   {filteredTasks.length === 0 && (
