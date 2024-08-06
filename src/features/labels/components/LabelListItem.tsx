@@ -1,9 +1,16 @@
-import { Checkbox, Flex, Grid, ListItem, Text } from "@chakra-ui/react";
+import {
+  Checkbox,
+  Flex,
+  Grid,
+  ListItem,
+  ListItemProps,
+  Text,
+} from "@chakra-ui/react";
 import useLabelStore from "../useLabelStore";
 import { Label } from "../../../types/types";
 import LabelBadge from "./LabelBadge";
 
-interface LabelListItemProps {
+interface LabelListItemProps extends ListItemProps {
   label: Label;
   hideBadge?: boolean;
 }
@@ -11,6 +18,7 @@ interface LabelListItemProps {
 export default function LabelListItem({
   label,
   hideBadge,
+  ...listItemProps
 }: LabelListItemProps) {
   const { enableLabel, disableLabel } = useLabelStore();
 
@@ -23,7 +31,7 @@ export default function LabelListItem({
   };
 
   return (
-    <ListItem key={label.id}>
+    <ListItem key={label.id} py={2} px={1} borderRadius="xs" {...listItemProps}>
       <Checkbox
         isChecked={label.enabled}
         onChange={() => handleCheckboxChange(label.id, !label.enabled)}

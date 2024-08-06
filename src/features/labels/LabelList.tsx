@@ -22,11 +22,12 @@ export default function LabelList() {
       </Flex>
       <List>
         <CheckboxGroup>
-          {labels.map((label) => (
+          {labels.map((label, i) => (
             <LabelListItem
               key={label.id}
               label={label}
               hideBadge={label.id === constants.UNLABELLED_ITEM_ID}
+              backgroundColor={i % 2 === 0 ? "gray.50" : "white"}
             />
           ))}
         </CheckboxGroup>
