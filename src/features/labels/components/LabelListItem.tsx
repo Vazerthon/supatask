@@ -1,8 +1,17 @@
-import { Badge, Checkbox, Grid, ListItem, Text } from "@chakra-ui/react";
-import useLabelStore from "./useLabelStore";
-import { Label } from "../../types/types";
+import { Checkbox, Grid, ListItem, Text } from "@chakra-ui/react";
+import useLabelStore from "../useLabelStore";
+import { Label } from "../../../types/types";
+import LabelBadge from "./LabelBadge";
 
-export default function LabelListItem({ label }: { label: Label }) {
+interface LabelListItemProps {
+  label: Label;
+  hideBadge?: boolean;
+}
+
+export default function LabelListItem({
+  label,
+  hideBadge,
+}: LabelListItemProps) {
   const { enableLabel, disableLabel } = useLabelStore();
 
   const handleCheckboxChange = (labelId: string, enabled: boolean) => {
@@ -22,13 +31,7 @@ export default function LabelListItem({ label }: { label: Label }) {
         <Grid templateColumns="auto 1fr" gap={2}>
           <Text noOfLines={1}>{label.text}</Text>
 
-          <Badge
-            w={4}
-            h={4}
-            borderRadius="50%"
-            backgroundColor={label.color_hex}
-            alignSelf="center"
-          />
+          {!hideBadge && <LabelBadge label={label} />}
         </Grid>
       </Checkbox>
     </ListItem>

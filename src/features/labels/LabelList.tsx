@@ -1,6 +1,7 @@
 import { Checkbox, CheckboxGroup, List, Text, Flex } from "@chakra-ui/react";
 import useLabelStore from "./useLabelStore";
-import LabelListItem from "./LabelListItem";
+import LabelListItem from "./components/LabelListItem";
+import constants from "../../constants";
 
 export default function LabelList() {
   const { labels, enableAll, disableAll } = useLabelStore();
@@ -22,7 +23,11 @@ export default function LabelList() {
       <List>
         <CheckboxGroup>
           {labels.map((label) => (
-            <LabelListItem key={label.id} label={label} />
+            <LabelListItem
+              key={label.id}
+              label={label}
+              hideBadge={label.id === constants.UNLABELLED_ITEM_ID}
+            />
           ))}
         </CheckboxGroup>
       </List>

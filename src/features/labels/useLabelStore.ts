@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { Label } from "../../types/types";
+import constants from "../../constants";
 
 interface LabelState {
   labels: Label[];
@@ -20,7 +21,7 @@ const useLabelStore = create<LabelState>((set) => ({
     set({
       labels: [
         {
-          id: "unlabelled",
+          id: constants.UNLABELLED_ITEM_ID,
           text: "Unlabelled",
           color_hex: "#ffffff",
           enabled: true,

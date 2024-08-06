@@ -1,6 +1,7 @@
-import { Badge, Flex, FlexProps } from "@chakra-ui/react";
+import { Flex, FlexProps } from "@chakra-ui/react";
 import { Task } from "../../types/types";
 import useSharedState from "../useSharedState";
+import LabelBadge from "./components/LabelBadge";
 
 interface TaskLabelListProps extends FlexProps {
   task: Task;
@@ -19,15 +20,7 @@ export default function TaskLabelList({
   return (
     <Flex {...flexProps}>
       {taskLabels.map((label) => (
-        <Badge
-          key={label.id}
-          w={4}
-          h={4}
-          ml={1}
-          borderRadius="50%"
-          backgroundColor={label.color_hex}
-          alignSelf="center"
-        />
+        <LabelBadge label={label} key={label.id} ml={1} />
       ))}
     </Flex>
   );
