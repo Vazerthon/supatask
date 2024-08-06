@@ -9,6 +9,7 @@ import { Task } from "../../../types/types";
 import useTaskStore from "../useTaskStore";
 import useTasks from "./useTasks";
 import TaskLabelList from "../../labels/TaskLabelList";
+import TaskListItemMenu from "./TaskListItemMenu";
 
 interface TaskListItemProps extends ListItemProps {
   item: Task;
@@ -56,9 +57,12 @@ export default function TaskListItem({
           },
         }}
       >
-        <Grid templateColumns="auto 1fr" gap={2}>
-          <Text ml={1}>{item.title}</Text>
+        <Grid templateColumns="auto 1fr 40px" gap={2}>
+          <Text ml={1} alignContent="center">
+            {item.title}
+          </Text>
           <TaskLabelList task={item} flexDirection="row-reverse" />
+          <TaskListItemMenu />
         </Grid>
       </Checkbox>
     </ListItem>
