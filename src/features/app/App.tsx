@@ -10,7 +10,7 @@ function App() {
 
   return (
     <>
-      <Box m={4} p={4}>
+      <Box m={4}>
         {!!session && (
           <>
             <Tasks />
