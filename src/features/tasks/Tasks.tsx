@@ -37,6 +37,7 @@ export default function Tasks() {
           `*, ${constants.COMPLETION_TABLE}(*), ${constants.TASK_LABEL_TABLE}(*)`
         )
         .eq("frequency", frequency)
+        .eq("deleted", false)
         .then(({ data }) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error

@@ -5,7 +5,12 @@ import constants from "../../../constants";
 import { Completion, Label, Task } from "../../../types/types";
 
 export default function useTasks() {
-  const { frequency, frequencyPeriod, setTaskLabelsForTask } = useTaskStore();
+  const {
+    frequency,
+    frequencyPeriod,
+    setTaskLabelsForTask,
+    deleteTask: storeDeleteTask,
+  } = useTaskStore();
 
   const createTaskLabels = useCallback(
     async (taskId: Task["id"], labels: Label[]) => {
@@ -52,7 +57,7 @@ export default function useTasks() {
   );
 
   const getTaskLabelsForTask = useCallback(
-    (taskId: string) => {
+    (taskId: Task["id"]) => {
       supabase
         .from(constants.TASK_LABEL_TABLE)
         .select()
@@ -66,9 +71,23 @@ export default function useTasks() {
     [setTaskLabelsForTask]
   );
 
+  const deleteTask = useCallback(
+    (taskId: Task["id"]) => {
+      supabase
+        .from(constants.TASKS_TABLE)
+        .update({ deleted: true })
+        .eq("id", taskId)
+        .then(() => {
+          storeDeleteTask(taskId);
+        });
+    },
+    [storeDeleteTask]
+  );
+
   return {
     addTask,
     toggleTaskCompletion,
     getTaskLabelsForTask,
+    deleteTask,
   };
 }

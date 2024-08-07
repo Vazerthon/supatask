@@ -89,22 +89,25 @@ export type Database = {
       };
       task: {
         Row: {
+          deleted: boolean;
           frequency: Database["public"]["Enums"]["frequency"];
           id: string;
-          title: string | null;
-          user_id: string | null;
+          title: string;
+          user_id: string;
         };
         Insert: {
+          deleted?: boolean;
           frequency?: Database["public"]["Enums"]["frequency"];
           id?: string;
-          title?: string | null;
-          user_id?: string | null;
+          title: string;
+          user_id?: string;
         };
         Update: {
+          deleted?: boolean;
           frequency?: Database["public"]["Enums"]["frequency"];
           id?: string;
-          title?: string | null;
-          user_id?: string | null;
+          title?: string;
+          user_id?: string;
         };
         Relationships: [
           {

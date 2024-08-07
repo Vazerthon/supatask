@@ -62,7 +62,7 @@ export default function TaskListItem({
             {item.title}
           </Text>
           <TaskLabelList task={item} flexDirection="row-reverse" />
-          <TaskListItemMenu />
+          <TaskListItemMenu task={item} />
         </Grid>
       </Checkbox>
     </ListItem>

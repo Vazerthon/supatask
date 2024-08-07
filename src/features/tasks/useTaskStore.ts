@@ -25,6 +25,7 @@ interface TaskState {
   year: string;
   frequencyPeriod: Record<"daily" | "weekly" | "monthly" | "yearly", string>;
   frequencyLabel: Record<"daily" | "weekly" | "monthly" | "yearly", string>;
+  deleteTask: (taskId: Task["id"]) => void;
 }
 
 const today = startOfToday();
@@ -85,6 +86,10 @@ const useTaskStore = create<TaskState>((set) => ({
     monthly: `To do in ${format(today, "MMMM yyyy")}`,
     yearly: `To do in ${getYear(today)}`,
   },
+  deleteTask: (taskId) =>
+    set((state) => ({
+      tasks: state.tasks.filter((task) => task.id !== taskId),
+    })),
 }));
 
 export default useTaskStore;
