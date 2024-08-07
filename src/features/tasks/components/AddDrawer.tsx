@@ -6,11 +6,12 @@ import {
   DrawerBody,
   IconButton,
   Flex,
+  Icon,
 } from "@chakra-ui/react";
 
-import { AddIcon } from "@chakra-ui/icons";
 import { useRef } from "react";
 import CreateTask from "./CreateTask";
+import icons from "../../../icons";
 
 export default function AddDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -26,7 +27,7 @@ export default function AddDrawer() {
         ref={btnRef}
         onClick={onOpen}
       >
-        <AddIcon />
+        <Icon as={icons.Plus} />
       </IconButton>
 
       <Drawer

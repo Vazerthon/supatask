@@ -1,4 +1,3 @@
-import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   useDisclosure,
   Drawer,
@@ -9,11 +8,13 @@ import {
   IconButton,
   Flex,
   Box,
+  Icon,
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import Logout from "./Logout";
 import LabelList from "../../labels/LabelList";
 import CreateLabel from "../../labels/CreateLabel";
+import icons from "../../../icons";
 
 export default function Menu() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -28,7 +29,7 @@ export default function Menu() {
         bottom={8}
         left={8}
       >
-        <HamburgerIcon />
+        <Icon as={icons.Menu} />
       </IconButton>
       <Drawer
         isOpen={isOpen}

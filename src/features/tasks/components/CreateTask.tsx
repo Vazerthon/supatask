@@ -1,11 +1,11 @@
-import { Input, Flex, IconButton, Text } from "@chakra-ui/react";
+import { Input, Flex, IconButton, Text, Icon } from "@chakra-ui/react";
 
-import { CheckIcon } from "@chakra-ui/icons";
 import useTasks from "./useTasks";
 import useTaskStore from "../useTaskStore";
 import { useRef, useState } from "react";
 import { Label } from "../../../types/types";
 import SelectLabels from "../../labels/SelectLabels";
+import icons from "../../../icons";
 
 export default function CreateTask() {
   const { addTask } = useTasks();
@@ -57,7 +57,7 @@ export default function CreateTask() {
             aria-label="Submit new task"
             isDisabled={!inputText.trim()}
           >
-            <CheckIcon />
+            <Icon as={icons.Check} />
           </IconButton>
         </Flex>
       </form>

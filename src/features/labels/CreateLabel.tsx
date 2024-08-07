@@ -1,7 +1,7 @@
-import { Input, Flex, IconButton, Text } from "@chakra-ui/react";
-import { CheckIcon } from "@chakra-ui/icons";
+import { Input, Flex, IconButton, Text, Icon } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import useLabels from "./useLabels";
+import icons from "../../icons";
 
 export default function CreateLabel() {
   const { addLabel } = useLabels();
@@ -53,7 +53,7 @@ export default function CreateLabel() {
             aria-label="Submit new label"
             isDisabled={!inputText.trim()}
           >
-            <CheckIcon />
+            <Icon as={icons.Check} />
           </IconButton>
         </Flex>
       </form>

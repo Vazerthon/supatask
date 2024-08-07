@@ -1,10 +1,17 @@
-import { Flex, Select, FlexProps, Text, IconButton } from "@chakra-ui/react";
+import {
+  Flex,
+  Select,
+  FlexProps,
+  Text,
+  IconButton,
+  Icon,
+} from "@chakra-ui/react";
 
 import useLabelStore from "./useLabelStore";
 import { Label } from "../../types/types";
-import { CloseIcon } from "@chakra-ui/icons";
 import LabelBadge from "./components/LabelBadge";
 import constants from "../../constants";
+import icons from "../../icons";
 
 interface SelectLabelsProps extends FlexProps {
   selectedLabels: Label[];
@@ -57,11 +64,11 @@ export default function SelectLabels({
               maxW={32}
             >
               <Text noOfLines={1}>{label.text}</Text>
-              <LabelBadge label={label} />
+              <LabelBadge label={label} ml={1} />
 
               <IconButton
                 aria-label="Remove label"
-                icon={<CloseIcon />}
+                icon={<Icon as={icons.Delete} />}
                 size="xs"
                 ml={2}
                 onClick={() => handleRemoveLabel(label)}
