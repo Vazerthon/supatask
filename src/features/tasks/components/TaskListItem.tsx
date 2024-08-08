@@ -32,7 +32,7 @@ export default function TaskListItem({
   const completedAtDateString = completionForCurrentPeriod?.completed_at;
   const completionString =
     completedAtDateString &&
-    `completed: ${format(completedAtDateString, "do MMM")}`;
+    `completed: ${format(completedAtDateString, "iii do MMM")}`;
 
   const handleCheckboxChange = async (
     event: React.ChangeEvent<HTMLInputElement>
