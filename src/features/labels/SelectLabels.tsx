@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Flex,
   Select,
@@ -24,6 +25,7 @@ export default function SelectLabels({
   ...flexProps
 }: SelectLabelsProps) {
   const { labels } = useLabelStore();
+  const [selectValue, setSelectValue] = useState<string>("");
 
   const labelsWithoutUnlabelled = labels.filter(
     (label) => label.id !== constants.UNLABELLED_ITEM_ID
@@ -33,6 +35,8 @@ export default function SelectLabels({
     if (!e.target.value) {
       return;
     }
+
+    setSelectValue("");
 
     onSelectionChange(
       Array.from(
@@ -77,7 +81,12 @@ export default function SelectLabels({
           ))}
         </>
       )}
-      <Select placeholder="Select labels" mt={2} onChange={handleAddLabel}>
+      <Select
+        placeholder="Select labels"
+        mt={2}
+        onChange={handleAddLabel}
+        value={selectValue}
+      >
         {labelsWithoutUnlabelled.map((label) => (
           <option key={label.id} value={label.id}>
             {label.text}
