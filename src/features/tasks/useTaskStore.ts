@@ -9,6 +9,8 @@ import {
 } from "date-fns";
 import { Completion, Task, TaskLabel } from "../../types/types";
 
+type Frequency = "one off" | "daily" | "weekly" | "monthly" | "yearly";
+
 interface TaskState {
   tasks: Task[];
   setTasks: (tasks: Task[]) => void;
@@ -16,15 +18,15 @@ interface TaskState {
   addCompletionToTask: (taskId: Task["id"], completion: Completion) => void;
   updateCompletionForTask: (taskId: Task["id"], completion: Completion) => void;
   setTaskLabelsForTask: (taskId: Task["id"], labels: TaskLabel[]) => void;
-  frequencies: ["daily", "weekly", "monthly", "yearly"];
-  frequency: "daily" | "weekly" | "monthly" | "yearly";
-  setFrequency: (frequency: "daily" | "weekly" | "monthly" | "yearly") => void;
+  frequencies: ["one off", "daily", "weekly", "monthly", "yearly"];
+  frequency: Frequency;
+  setFrequency: (frequency: Frequency) => void;
   day: string;
   week: string;
   month: string;
   year: string;
-  frequencyPeriod: Record<"daily" | "weekly" | "monthly" | "yearly", string>;
-  frequencyLabel: Record<"daily" | "weekly" | "monthly" | "yearly", string>;
+  frequencyPeriod: Record<Frequency, string>;
+  frequencyLabel: Record<Frequency, string>;
   deleteTask: (taskId: Task["id"]) => void;
 }
 
@@ -66,21 +68,22 @@ const useTaskStore = create<TaskState>((set) => ({
       ),
     }));
   },
-  frequencies: ["daily", "weekly", "monthly", "yearly"],
-  frequency: "daily",
-  setFrequency: (frequency: "daily" | "weekly" | "monthly" | "yearly") =>
-    set({ frequency }),
+  frequencies: ["one off", "daily", "weekly", "monthly", "yearly"],
+  frequency: "one off",
+  setFrequency: (frequency: Frequency) => set({ frequency }),
   day,
   week,
   month,
   year,
   frequencyPeriod: {
+    "one off": "one off",
     daily: day,
     weekly: week,
     monthly: month,
     yearly: year,
   },
   frequencyLabel: {
+    "one off": "One time tasks to be done",
     daily: `To do today, ${format(today, "MMMM do")}`,
     weekly: `To do in week ${getWeek(today)} of ${getYear(today)}`,
     monthly: `To do in ${format(today, "MMMM yyyy")}`,
