@@ -51,6 +51,7 @@ export default function useTasks() {
         task_id: task.id,
         period: frequencyPeriod[frequency],
         complete,
+        completed_at: complete ? new Date().toISOString() : null,
       });
     },
     [frequency, frequencyPeriod]

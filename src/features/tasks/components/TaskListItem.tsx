@@ -1,10 +1,12 @@
 import {
   Checkbox,
+  Flex,
   Grid,
   ListItem,
   ListItemProps,
   Text,
 } from "@chakra-ui/react";
+import { format } from "date-fns";
 import { Task } from "../../../types/types";
 import useTaskStore from "../useTaskStore";
 import useTasks from "./useTasks";
@@ -27,6 +29,10 @@ export default function TaskListItem({
   );
 
   const isChecked = completionForCurrentPeriod?.complete || false;
+  const completedAtDateString = completionForCurrentPeriod?.completed_at;
+  const completionString =
+    completedAtDateString &&
+    `completed: ${format(completedAtDateString, "do MMM")}`;
 
   const handleCheckboxChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -58,9 +64,15 @@ export default function TaskListItem({
         }}
       >
         <Grid templateColumns="auto 1fr 40px" gap={2}>
-          <Text ml={1} alignContent="center">
-            {item.title}
-          </Text>
+          <Flex direction="column" ml={1} justifyContent="center">
+            <Text alignContent="center">{item.title}</Text>
+            {completionString && (
+              <Text fontSize="sm" color="gray.600">
+                {completionString}
+              </Text>
+            )}
+          </Flex>
+
           <TaskLabelList task={item} flexDirection="row-reverse" />
           <TaskListItemMenu task={item} />
         </Grid>

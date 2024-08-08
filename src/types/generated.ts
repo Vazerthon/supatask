@@ -37,6 +37,7 @@ export type Database = {
       completion: {
         Row: {
           complete: boolean;
+          completed_at: string | null;
           id: string;
           period: string;
           task_id: string;
@@ -44,6 +45,7 @@ export type Database = {
         };
         Insert: {
           complete?: boolean;
+          completed_at?: string | null;
           id?: string;
           period: string;
           task_id: string;
@@ -51,6 +53,7 @@ export type Database = {
         };
         Update: {
           complete?: boolean;
+          completed_at?: string | null;
           id?: string;
           period?: string;
           task_id?: string;
