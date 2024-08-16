@@ -1,6 +1,5 @@
 import {
   Checkbox,
-  Flex,
   Grid,
   ListItem,
   ListItemProps,
