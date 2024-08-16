@@ -39,6 +39,7 @@ export type Database = {
           complete: boolean;
           completed_at: string | null;
           id: string;
+          note: string | null;
           period: string;
           task_id: string;
           user_id: string;
@@ -47,6 +48,7 @@ export type Database = {
           complete?: boolean;
           completed_at?: string | null;
           id?: string;
+          note?: string | null;
           period: string;
           task_id: string;
           user_id?: string;
@@ -55,6 +57,7 @@ export type Database = {
           complete?: boolean;
           completed_at?: string | null;
           id?: string;
+          note?: string | null;
           period?: string;
           task_id?: string;
           user_id?: string;
@@ -166,7 +169,7 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
-      frequency: "daily" | "weekly" | "monthly" | "yearly";
+      frequency: "one off" | "daily" | "weekly" | "monthly" | "yearly";
     };
     CompositeTypes: {
       [_ in never]: never;

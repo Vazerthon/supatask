@@ -85,10 +85,27 @@ export default function useTasks() {
     [storeDeleteTask]
   );
 
+  const addTaskNote = useCallback(
+    async (
+      task: Task,
+      note: string,
+      completionForCurrentPeriod?: Completion
+    ) => {
+      await supabase.from(constants.COMPLETION_TABLE).upsert({
+        id: completionForCurrentPeriod?.id,
+        task_id: task.id,
+        period: frequencyPeriod[frequency],
+        note,
+      });
+    },
+    [frequency, frequencyPeriod]
+  );
+
   return {
     addTask,
     toggleTaskCompletion,
     getTaskLabelsForTask,
     deleteTask,
+    addTaskNote,
   };
 }

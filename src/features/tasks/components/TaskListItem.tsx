@@ -7,7 +7,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { format } from "date-fns";
-import { Task } from "../../../types/types";
+import { Task, Completion } from "../../../types/types";
 import useTaskStore from "../useTaskStore";
 import useTasks from "./useTasks";
 import TaskLabelList from "../../labels/TaskLabelList";
@@ -24,9 +24,8 @@ export default function TaskListItem({
   const { frequencyPeriod } = useTaskStore();
   const { toggleTaskCompletion } = useTasks();
 
-  const completionForCurrentPeriod = item.completion.find(
-    (c) => c.period === frequencyPeriod[item.frequency]
-  );
+  const completionForCurrentPeriod: Completion | undefined =
+    item.completion.find((c) => c.period === frequencyPeriod[item.frequency]);
 
   const isChecked = completionForCurrentPeriod?.complete || false;
   const completedAtDateString = completionForCurrentPeriod?.completed_at;
@@ -63,18 +62,32 @@ export default function TaskListItem({
           },
         }}
       >
-        <Grid templateColumns="auto 1fr 40px" gap={2}>
-          <Flex direction="column" ml={1} justifyContent="center">
-            <Text alignContent="center">{item.title}</Text>
-            {completionString && (
-              <Text fontSize="sm" color="gray.600">
-                {completionString}
-              </Text>
-            )}
-          </Flex>
+        <Grid
+          templateAreas={`
+          "task label menu"
+          "completion  note note"
+          `}
+          gridTemplateColumns="1fr auto auto"
+          gap={2}
+        >
+          <Text gridArea="task" alignContent="center">
+            {item.title}
+          </Text>
+          {completionString && (
+            <Text gridArea="completion" fontSize="sm" color="gray.600">
+              {completionString}
+            </Text>
+          )}
+          <Text gridArea="note" fontSize="sm" color="gray.600">
+            {completionForCurrentPeriod?.note}
+          </Text>
 
-          <TaskLabelList task={item} flexDirection="row-reverse" />
-          <TaskListItemMenu task={item} />
+          <TaskLabelList gridArea="label" task={item} />
+          <TaskListItemMenu
+            gridArea="menu"
+            task={item}
+            completionForCurrentPeriod={completionForCurrentPeriod}
+          />
         </Grid>
       </Checkbox>
     </ListItem>
