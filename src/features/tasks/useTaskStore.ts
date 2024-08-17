@@ -1,14 +1,16 @@
 import { create } from "zustand";
-import {
-  getDayOfYear,
-  getMonth,
-  getWeek,
-  getYear,
-  startOfToday,
-  format,
-} from "date-fns";
 import { Completion, Task, TaskLabel } from "../../types/types";
-
+import {
+  today,
+  day,
+  week,
+  month,
+  year,
+  formatDay,
+  formatWeekOfYear,
+  formatMonthOfYear,
+  formatYear,
+} from "../../date-helpers";
 type Frequency = "one off" | "daily" | "weekly" | "monthly" | "yearly";
 
 interface TaskState {
@@ -29,12 +31,6 @@ interface TaskState {
   frequencyLabel: Record<Frequency, string>;
   deleteTask: (taskId: Task["id"]) => void;
 }
-
-const today = startOfToday();
-const day = `day-${getDayOfYear(today)}-${getYear(today)}`;
-const week = `week-${getWeek(today)}-${getYear(today)}`;
-const month = `month-${getMonth(today)}-${getYear(today)}`;
-const year = `year-${getYear(today)}`;
 
 const useTaskStore = create<TaskState>((set) => ({
   tasks: [],
@@ -84,10 +80,10 @@ const useTaskStore = create<TaskState>((set) => ({
   },
   frequencyLabel: {
     "one off": "One time tasks to be done",
-    daily: `To do today, ${format(today, "MMMM do")}`,
-    weekly: `To do in week ${getWeek(today)} of ${getYear(today)}`,
-    monthly: `To do in ${format(today, "MMMM yyyy")}`,
-    yearly: `To do in ${getYear(today)}`,
+    daily: `To do today, ${formatDay(today)}`,
+    weekly: `To do in week ${formatWeekOfYear(today)}`,
+    monthly: `To do in ${formatMonthOfYear(today)}`,
+    yearly: `To do in ${formatYear(today)}`,
   },
   deleteTask: (taskId) =>
     set((state) => ({

@@ -5,12 +5,12 @@ import {
   ListItemProps,
   Text,
 } from "@chakra-ui/react";
-import { format } from "date-fns";
 import { Task, Completion } from "../../../types/types";
 import useTaskStore from "../useTaskStore";
 import useTasks from "./useTasks";
 import TaskLabelList from "../../labels/TaskLabelList";
 import TaskListItemMenu from "./TaskListItemMenu";
+import { formatShortDate } from "../../../date-helpers";
 
 interface TaskListItemProps extends ListItemProps {
   item: Task;
@@ -30,7 +30,7 @@ export default function TaskListItem({
   const completedAtDateString = completionForCurrentPeriod?.completed_at;
   const completionString =
     completedAtDateString &&
-    `completed: ${format(completedAtDateString, "iii do MMM")}`;
+    `completed: ${formatShortDate(completedAtDateString)}`;
 
   const handleCheckboxChange = async (
     event: React.ChangeEvent<HTMLInputElement>

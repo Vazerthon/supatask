@@ -55,6 +55,9 @@ function TaskList() {
                         item={task}
                         key={task.id}
                         backgroundColor={i % 2 === 0 ? "gray.50" : "white"}
+                        py={2}
+                        px={1}
+                        borderRadius="xs"
                       />
                     ))}
                   </CheckboxGroup>
