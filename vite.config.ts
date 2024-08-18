@@ -8,12 +8,12 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.ico", "apple-touch-icon.png", "mask-icon.svg"],
+      includeAssets: ["favicon.ico", "apple-touch-icon.png"],
       manifest: {
-        name: "Supatask",
-        short_name: "Supatask",
-        description: "Get on top of your to do list!",
-        theme_color: "#ffffff",
+        name: "BOOM",
+        short_name: "BOOM",
+        description: "Smash your to do list!",
+        theme_color: "#000",
         icons: [
           {
             src: "192x192.png",
@@ -24,6 +24,7 @@ export default defineConfig({
             src: "512x512.png",
             sizes: "512x512",
             type: "image/png",
+            purpose: "any maskable",
           },
         ],
       },
