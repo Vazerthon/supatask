@@ -10,7 +10,11 @@ import useTaskStore from "../useTaskStore";
 import useTasks from "./useTasks";
 import TaskLabelList from "../../labels/TaskLabelList";
 import TaskListItemMenu from "./TaskListItemMenu";
-import { formatShortDate } from "../../../date-helpers";
+import {
+  countDaysToNow,
+  formatShortDate,
+  maxDate,
+} from "../../../date-helpers";
 
 interface TaskListItemProps extends ListItemProps {
   item: Task;
@@ -31,6 +35,21 @@ export default function TaskListItem({
   const completionString =
     completedAtDateString &&
     `completed: ${formatShortDate(completedAtDateString)}`;
+
+  const distanceFromLastCompletion = () => {
+    const completionDates = item.completion
+      .map((c) => (c.complete ? c.completed_at : null))
+      .filter((d) => d !== null);
+    const lastCompletionDate = maxDate(completionDates);
+    const distance = lastCompletionDate
+      ? countDaysToNow(lastCompletionDate)
+      : null;
+    return distance && distance > 0
+      ? `last completed ${distance} day${distance === 1 ? "" : "s"} ago`
+      : null;
+  };
+
+  const completionLabel = completionString || distanceFromLastCompletion();
 
   const handleCheckboxChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -72,9 +91,9 @@ export default function TaskListItem({
           <Text gridArea="task" alignContent="center">
             {item.title}
           </Text>
-          {completionString && (
+          {completionLabel && (
             <Text gridArea="completion" fontSize="sm" color="gray.600">
-              {completionString}
+              {completionLabel}
             </Text>
           )}
           <Text gridArea="note" fontSize="sm" color="gray.600">

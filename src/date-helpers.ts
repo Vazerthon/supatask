@@ -5,6 +5,8 @@ import {
   getYear,
   startOfToday,
   format,
+  max,
+  differenceInDays,
 } from "date-fns";
 
 export const formatShortDate = (date: string | Date) =>
@@ -15,6 +17,10 @@ export const formatWeekOfYear = (date: string | Date) =>
 export const formatMonthOfYear = (date: string | Date) =>
   format(date, "MMMM yyyy");
 export const formatYear = (date: string | Date) => getYear(date).toString();
+export const countDaysToNow = (date: string | Date) =>
+  differenceInDays(new Date(), date);
+
+export const maxDate = (dates: (string | Date)[]): Date | null => max(dates);
 
 export const today = startOfToday();
 export const day = `day-${getDayOfYear(today)}-${getYear(today)}`;
