@@ -1,10 +1,10 @@
 import { Label } from "../types/types";
-import useLabelStore from "./labels/useLabelStore";
+import { useLabelList } from "./labels/useLabelStore";
 import { useTasksList } from "./tasks/useTaskStore";
 
 export default function useSharedState() {
   const tasks = useTasksList();
-  const { labels } = useLabelStore();
+  const labels = useLabelList();
 
   const labelsDict: Record<Label["id"], Label> = labels.reduce(
     (acc, label) => ({ ...acc, [label.id]: label }),

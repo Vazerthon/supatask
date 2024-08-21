@@ -6,7 +6,7 @@ import {
   ListItemProps,
   Text,
 } from "@chakra-ui/react";
-import useLabelStore from "../useLabelStore";
+import { useEnableLabel, useDisableLabel } from "../useLabelStore";
 import { Label } from "../../../types/types";
 import LabelBadge from "./LabelBadge";
 
@@ -20,7 +20,8 @@ export default function LabelListItem({
   hideBadge,
   ...listItemProps
 }: LabelListItemProps) {
-  const { enableLabel, disableLabel } = useLabelStore();
+  const enableLabel = useEnableLabel();
+  const disableLabel = useDisableLabel();
 
   const handleCheckboxChange = (labelId: string, enabled: boolean) => {
     if (enabled) {

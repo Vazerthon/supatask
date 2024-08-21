@@ -1,10 +1,16 @@
 import { Checkbox, CheckboxGroup, List, Text, Flex } from "@chakra-ui/react";
-import useLabelStore from "./useLabelStore";
+import {
+  useLabelList,
+  useEnableAllLabels,
+  useDisableAllLabels,
+} from "./useLabelStore";
 import LabelListItem from "./components/LabelListItem";
 import constants from "../../constants";
 
 export default function LabelList() {
-  const { labels, enableAll, disableAll } = useLabelStore();
+  const labels = useLabelList();
+  const enableAll = useEnableAllLabels();
+  const disableAll = useDisableAllLabels();
 
   const allEnabled = labels.every((label) => label.enabled);
 

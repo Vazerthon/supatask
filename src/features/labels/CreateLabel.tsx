@@ -1,10 +1,10 @@
 import { Input, Flex, IconButton, Text, Icon } from "@chakra-ui/react";
 import { useRef, useState } from "react";
-import useLabels from "./useLabels";
 import icons from "../../icons";
+import { useLabelsApi } from "./useLabelStore";
 
 export default function CreateLabel() {
-  const { addLabel } = useLabels();
+  const { addLabel } = useLabelsApi();
   const [inputText, setInputText] = useState("");
   const [inputColor, setInputColor] = useState("#000000");
 

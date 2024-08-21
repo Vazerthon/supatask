@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
-import useLabelStore from "./useLabelStore";
+import { useSetLabels, useAddLabel } from "./useLabelStore";
 import { supabase } from "../../supabaseClient";
 import constants from "../../constants";
 import { Label } from "../../types/types";
 
 export default function Labels() {
-  const { setLabels, addLabel } = useLabelStore();
+  const setLabels = useSetLabels();
+  const addLabel = useAddLabel();
 
   useEffect(() => {
     const getLabels = () => {

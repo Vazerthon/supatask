@@ -8,7 +8,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 
-import useLabelStore from "./useLabelStore";
+import { useLabelList } from "./useLabelStore";
 import { Label } from "../../types/types";
 import LabelBadge from "./components/LabelBadge";
 import constants from "../../constants";
@@ -24,7 +24,7 @@ export default function SelectLabels({
   onSelectionChange,
   ...flexProps
 }: SelectLabelsProps) {
-  const { labels } = useLabelStore();
+  const labels = useLabelList();
   const [selectValue, setSelectValue] = useState<string>("");
 
   const labelsWithoutUnlabelled = labels.filter(

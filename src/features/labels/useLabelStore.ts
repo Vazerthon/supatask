@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { useCallback } from "react";
+import { supabase } from "../../supabaseClient";
 import { Label } from "../../types/types";
 import constants from "../../constants";
 
@@ -47,4 +49,25 @@ const useLabelStore = create<LabelState>((set) => ({
   disableAll: () => set((state) => ({ labels: state.labels.map(disableAll) })),
 }));
 
-export default useLabelStore;
+export const useSetLabels = () => useLabelStore((state) => state.setLabels);
+export const useAddLabel = () => useLabelStore((state) => state.addLabel);
+export const useLabelList = () => useLabelStore((state) => state.labels);
+export const useEnableLabel = () => useLabelStore((state) => state.enableLabel);
+export const useDisableLabel = () =>
+  useLabelStore((state) => state.disableLabel);
+export const useEnableAllLabels = () =>
+  useLabelStore((state) => state.enableAll);
+export const useDisableAllLabels = () =>
+  useLabelStore((state) => state.disableAll);
+
+export function useLabelsApi() {
+  const addLabel = useCallback(async (text: string, color: string) => {
+    await supabase
+      .from(constants.LABEL_TABLE)
+      .insert({ text, color_hex: color });
+  }, []);
+
+  return {
+    addLabel,
+  };
+}
