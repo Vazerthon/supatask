@@ -1,24 +1,29 @@
 import { useCallback, useEffect } from "react";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
-import useTaskStore from "./useTaskStore";
+import {
+  useAddTask,
+  useSetTasks,
+  useTasksApi,
+  useFrequency,
+  useAddCompletionToTask,
+  useUpdateCompletionForTask,
+} from "./useTaskStore";
 import { supabase } from "../../supabaseClient";
 import constants from "../../constants";
 import { Completion, Task } from "../../types/types";
 
 import TaskList from "./components/TaskList";
 import AddDrawer from "./components/AddDrawer";
-import useTasks from "./components/useTasks";
 
 export default function Tasks() {
-  const {
-    setTasks,
-    frequency,
-    addTask: addTaskToStore,
-    addCompletionToTask,
-    updateCompletionForTask,
-  } = useTaskStore();
+  const frequency = useFrequency();
+  const addCompletionToTask = useAddCompletionToTask();
+  const updateCompletionForTask = useUpdateCompletionForTask();
 
-  const { getTaskLabelsForTask } = useTasks();
+  const addTaskToStore = useAddTask();
+  const setTasks = useSetTasks();
+
+  const { getTaskLabelsForTask } = useTasksApi();
 
   const makeTaskFromPayload = useCallback(
     (task: Task): Task => ({

@@ -10,12 +10,21 @@ import {
   Text,
   CheckboxGroup,
 } from "@chakra-ui/react";
-import useTaskStore from "../useTaskStore";
+import {
+  useTasksList,
+  useFrequencies,
+  useFrequencyLabel,
+  useSetFrequency,
+} from "../useTaskStore";
 import TaskListItem from "./TaskListItem";
 import useSharedState from "../../useSharedState";
 
 function TaskList() {
-  const { tasks, frequencies, setFrequency, frequencyLabel } = useTaskStore();
+  const frequencies = useFrequencies();
+  const frequencyLabel = useFrequencyLabel();
+  const setFrequency = useSetFrequency();
+  const tasks = useTasksList();
+
   const { filteredTasks } = useSharedState();
 
   const handleTabChange = (index: number) => {

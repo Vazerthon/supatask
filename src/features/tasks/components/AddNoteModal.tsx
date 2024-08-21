@@ -13,7 +13,7 @@ import {
 import { Completion, Task } from "../../../types/types";
 import icons from "../../../icons";
 import { useCallback, useRef, useState } from "react";
-import useTasks from "./useTasks";
+import { useTasksApi } from "../useTaskStore";
 
 interface AddNoteModalProps {
   isOpen: boolean;
@@ -28,7 +28,7 @@ export default function AddNoteModal({
   task,
   completionForCurrentPeriod,
 }: AddNoteModalProps) {
-  const { addTaskNote } = useTasks();
+  const { addTaskNote } = useTasksApi();
 
   const [inputText, setInputText] = useState(
     completionForCurrentPeriod?.note || ""

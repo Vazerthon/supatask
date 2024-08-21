@@ -11,9 +11,9 @@ import {
 } from "@chakra-ui/react";
 import icons from "../../../icons";
 import { Task, Completion } from "../../../types/types";
-import useTasks from "./useTasks";
 import AddNoteModal from "./AddNoteModal";
 import TaskHistoryModal from "./TaskHistoryModal";
+import { useTasksApi } from "../useTaskStore";
 
 interface TaskListItemMenuProps extends BoxProps {
   task: Task;
@@ -25,7 +25,7 @@ export default function TaskListItemMenu({
   completionForCurrentPeriod,
   ...boxProps
 }: TaskListItemMenuProps) {
-  const { deleteTask } = useTasks();
+  const { deleteTask } = useTasksApi();
 
   const {
     isOpen: isNoteModalOpen,

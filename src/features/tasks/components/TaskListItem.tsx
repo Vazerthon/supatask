@@ -5,9 +5,7 @@ import {
   ListItemProps,
   Text,
 } from "@chakra-ui/react";
-import { Task, Completion } from "../../../types/types";
-import useTaskStore from "../useTaskStore";
-import useTasks from "./useTasks";
+import { Task } from "../../../types/types";
 import TaskLabelList from "../../labels/TaskLabelList";
 import TaskListItemMenu from "./TaskListItemMenu";
 import {
@@ -15,6 +13,7 @@ import {
   formatShortDate,
   maxDate,
 } from "../../../date-helpers";
+import { useTasksApi } from "../useTaskStore";
 
 interface TaskListItemProps extends ListItemProps {
   item: Task;
@@ -24,14 +23,10 @@ export default function TaskListItem({
   item,
   ...listItemProps
 }: TaskListItemProps) {
-  const { frequencyPeriod } = useTaskStore();
-  const { toggleTaskCompletion } = useTasks();
+  const { toggleTaskCompletion } = useTasksApi();
 
-  const completionForCurrentPeriod: Completion | undefined =
-    item.completion.find((c) => c.period === frequencyPeriod[item.frequency]);
-
-  const isChecked = completionForCurrentPeriod?.complete || false;
-  const completedAtDateString = completionForCurrentPeriod?.completed_at;
+  const isChecked = item.completionForCurrentPeriod?.complete || false;
+  const completedAtDateString = item.completionForCurrentPeriod?.completed_at;
   const completionString =
     completedAtDateString &&
     `completed: ${formatShortDate(completedAtDateString)}`;
@@ -57,7 +52,7 @@ export default function TaskListItem({
     await toggleTaskCompletion(
       item,
       event.target.checked,
-      completionForCurrentPeriod
+      item.completionForCurrentPeriod
     );
   };
 
@@ -97,14 +92,14 @@ export default function TaskListItem({
             </Text>
           )}
           <Text gridArea="note" fontSize="sm" color="gray.600">
-            {completionForCurrentPeriod?.note}
+            {item.completionForCurrentPeriod?.note}
           </Text>
 
           <TaskLabelList gridArea="label" task={item} />
           <TaskListItemMenu
             gridArea="menu"
             task={item}
-            completionForCurrentPeriod={completionForCurrentPeriod}
+            completionForCurrentPeriod={item.completionForCurrentPeriod}
           />
         </Grid>
       </Checkbox>

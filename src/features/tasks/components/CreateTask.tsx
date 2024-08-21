@@ -1,15 +1,14 @@
 import { Input, Flex, IconButton, Text, Icon } from "@chakra-ui/react";
 
-import useTasks from "./useTasks";
-import useTaskStore from "../useTaskStore";
+import { useTasksApi, useFrequency } from "../useTaskStore";
 import { useRef, useState } from "react";
 import { Label } from "../../../types/types";
 import SelectLabels from "../../labels/SelectLabels";
 import icons from "../../../icons";
 
 export default function CreateTask() {
-  const { addTask } = useTasks();
-  const { frequency } = useTaskStore();
+  const { addTask } = useTasksApi();
+  const frequency = useFrequency();
   const [inputText, setInputText] = useState("");
   const [selectedLabels, setSelectedLabels] = useState<Label[]>(
     new Array<Label>()

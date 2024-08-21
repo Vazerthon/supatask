@@ -1,5 +1,9 @@
 import { create } from "zustand";
-import { Completion, Task, TaskLabel } from "../../types/types";
+import { useCallback } from "react";
+import { supabase } from "../../supabaseClient";
+import constants from "../../constants";
+import { Completion, Task, TaskLabel, Label } from "../../types/types";
+
 import {
   today,
   day,
@@ -12,6 +16,7 @@ import {
   formatYear,
 } from "../../date-helpers";
 type Frequency = "one off" | "daily" | "weekly" | "monthly" | "yearly";
+type Sort = "alphabetical" | "completion";
 
 interface TaskState {
   tasks: Task[];
@@ -30,6 +35,7 @@ interface TaskState {
   frequencyPeriod: Record<Frequency, string>;
   frequencyLabel: Record<Frequency, string>;
   deleteTask: (taskId: Task["id"]) => void;
+  sortTasksBy: Sort;
 }
 
 const useTaskStore = create<TaskState>((set) => ({
@@ -89,6 +95,155 @@ const useTaskStore = create<TaskState>((set) => ({
     set((state) => ({
       tasks: state.tasks.filter((task) => task.id !== taskId),
     })),
+  sortTasksBy: "completion",
 }));
 
-export default useTaskStore;
+export const useFrequency = () => useTaskStore((state) => state.frequency);
+export const useTasksList = () => useTaskStore((state) => state.tasks);
+export const useFrequencies = () => useTaskStore((state) => state.frequencies);
+export const useSetFrequency = () =>
+  useTaskStore((state) => state.setFrequency);
+export const useAddCompletionToTask = () =>
+  useTaskStore((state) => state.addCompletionToTask);
+export const useUpdateCompletionForTask = () =>
+  useTaskStore((state) => state.updateCompletionForTask);
+
+export const useFrequencyLabel = () =>
+  useTaskStore((state) => state.frequencyLabel);
+
+const addCompletionForCurrentPeriod =
+  (frequencyPeriod: Record<Frequency, string>) =>
+  (task: Task): Task => ({
+    ...task,
+    completionForCurrentPeriod: task.completion.find(
+      (c) => c.period === frequencyPeriod[task.frequency]
+    ),
+  });
+
+export const useAddTask = () => {
+  const addTaskInStore = useTaskStore((state) => state.addTask);
+  const frequencyPeriod = useTaskStore((state) => state.frequencyPeriod);
+
+  const addTask = (task: Task) => {
+    addTaskInStore(addCompletionForCurrentPeriod(frequencyPeriod)(task));
+  };
+
+  return addTask;
+};
+
+export const useSetTasks = () => {
+  const setTasksInStore = useTaskStore((state) => state.setTasks);
+  const frequencyPeriod = useTaskStore((state) => state.frequencyPeriod);
+
+  const setTasks = (tasks: Task[]) => {
+    setTasksInStore(tasks.map(addCompletionForCurrentPeriod(frequencyPeriod)));
+  };
+
+  return setTasks;
+};
+
+export function useTasksApi() {
+  const {
+    frequency,
+    frequencyPeriod,
+    setTaskLabelsForTask,
+    deleteTask: storeDeleteTask,
+  } = useTaskStore();
+
+  const createTaskLabels = useCallback(
+    async (taskId: Task["id"], labels: Label[]) => {
+      const taskLabels = labels.map((label) => ({
+        task_id: taskId,
+        label_id: label.id,
+      }));
+      await supabase.from(constants.TASK_LABEL_TABLE).insert(taskLabels);
+    },
+    []
+  );
+
+  const addTask = useCallback(
+    async (title: string, labels: Label[]) => {
+      const taskResult = await supabase
+        .from(constants.TASKS_TABLE)
+        .insert({ title, frequency })
+        .select("id");
+
+      const taskId = taskResult.data ? taskResult.data[0].id : null;
+      if (!taskId || !labels.length) {
+        return;
+      }
+
+      await createTaskLabels(taskId, labels);
+    },
+    [createTaskLabels, frequency]
+  );
+
+  const toggleTaskCompletion = useCallback(
+    async (
+      task: Task,
+      complete: boolean,
+      completionForCurrentPeriod?: Completion
+    ) => {
+      await supabase.from(constants.COMPLETION_TABLE).upsert({
+        id: completionForCurrentPeriod?.id,
+        task_id: task.id,
+        period: frequencyPeriod[frequency],
+        complete,
+        completed_at: complete ? new Date().toISOString() : null,
+      });
+    },
+    [frequency, frequencyPeriod]
+  );
+
+  const getTaskLabelsForTask = useCallback(
+    (taskId: Task["id"]) => {
+      supabase
+        .from(constants.TASK_LABEL_TABLE)
+        .select()
+        .eq("task_id", taskId)
+        .then(({ data }) => {
+          if (data) {
+            setTaskLabelsForTask(taskId, data);
+          }
+        });
+    },
+    [setTaskLabelsForTask]
+  );
+
+  const deleteTask = useCallback(
+    (taskId: Task["id"]) => {
+      supabase
+        .from(constants.TASKS_TABLE)
+        .update({ deleted: true })
+        .eq("id", taskId)
+        .then(() => {
+          storeDeleteTask(taskId);
+        });
+    },
+    [storeDeleteTask]
+  );
+
+  const addTaskNote = useCallback(
+    async (
+      task: Task,
+      note: string,
+      completionForCurrentPeriod?: Completion
+    ) => {
+      await supabase.from(constants.COMPLETION_TABLE).upsert({
+        id: completionForCurrentPeriod?.id,
+        task_id: task.id,
+        period: frequencyPeriod[frequency],
+        note,
+      });
+    },
+    [frequency, frequencyPeriod]
+  );
+
+  return {
+    addTask,
+    toggleTaskCompletion,
+    getTaskLabelsForTask,
+    deleteTask,
+    addTaskNote,
+  };
+}
