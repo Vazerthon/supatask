@@ -99,7 +99,6 @@ const useTaskStore = create<TaskState>((set) => ({
 }));
 
 export const useFrequency = () => useTaskStore((state) => state.frequency);
-export const useTasksList = () => useTaskStore((state) => state.tasks);
 export const useFrequencies = () => useTaskStore((state) => state.frequencies);
 export const useSetFrequency = () =>
   useTaskStore((state) => state.setFrequency);
@@ -140,6 +139,36 @@ export const useSetTasks = () => {
   };
 
   return setTasks;
+};
+
+const sortTasksByCompletion = (tasks: Task[]): Task[] => {
+  return tasks.sort((a, b) => {
+    if (
+      a.completionForCurrentPeriod?.complete ===
+      b.completionForCurrentPeriod?.complete
+    ) {
+      return a.title.localeCompare(b.title);
+    }
+    return a.completionForCurrentPeriod?.complete ? 1 : -1;
+  });
+};
+
+const sortTasksByAlphabetical = (tasks: Task[]): Task[] => {
+  return tasks.sort((a, b) => {
+    return a.title.localeCompare(b.title);
+  });
+};
+
+const sortingFunctions = {
+  alphabetical: sortTasksByAlphabetical,
+  completion: sortTasksByCompletion,
+};
+
+export const useTasksList = () => {
+  const tasks = useTaskStore((state) => state.tasks);
+
+  const sortTasksBy = useTaskStore((state) => state.sortTasksBy);
+  return sortingFunctions[sortTasksBy](tasks);
 };
 
 export function useTasksApi() {
