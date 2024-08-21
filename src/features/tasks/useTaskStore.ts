@@ -123,9 +123,12 @@ export const useAddTask = () => {
   const addTaskInStore = useTaskStore((state) => state.addTask);
   const frequencyPeriod = useTaskStore((state) => state.frequencyPeriod);
 
-  const addTask = (task: Task) => {
-    addTaskInStore(addCompletionForCurrentPeriod(frequencyPeriod)(task));
-  };
+  const addTask = useCallback(
+    (task: Task) => {
+      addTaskInStore(addCompletionForCurrentPeriod(frequencyPeriod)(task));
+    },
+    [addTaskInStore, frequencyPeriod]
+  );
 
   return addTask;
 };
@@ -134,9 +137,14 @@ export const useSetTasks = () => {
   const setTasksInStore = useTaskStore((state) => state.setTasks);
   const frequencyPeriod = useTaskStore((state) => state.frequencyPeriod);
 
-  const setTasks = (tasks: Task[]) => {
-    setTasksInStore(tasks.map(addCompletionForCurrentPeriod(frequencyPeriod)));
-  };
+  const setTasks = useCallback(
+    (tasks: Task[]) => {
+      setTasksInStore(
+        tasks.map(addCompletionForCurrentPeriod(frequencyPeriod))
+      );
+    },
+    [setTasksInStore, frequencyPeriod]
+  );
 
   return setTasks;
 };

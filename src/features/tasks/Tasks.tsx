@@ -129,7 +129,7 @@ export default function Tasks() {
     subscribeToTasks();
 
     return unsubscribe;
-  }, [addTaskToStore, frequency, makeTaskFromPayload]);
+  }, [addTaskToStore, frequency, getTaskLabelsForTask, makeTaskFromPayload]);
 
   return (
     <>
