@@ -1,12 +1,12 @@
 import { Box } from "@chakra-ui/react";
 import Login from "./components/Login";
-import useSessionStore from "../../state/useSessionStore";
+import { useSession } from "../../state/useSessionStore";
 import Tasks from "../tasks/Tasks";
 import Menu from "./components/Menu";
 import Labels from "../labels/Labels";
 
 function App() {
-  const { session } = useSessionStore();
+  const session = useSession();
 
   return (
     <>

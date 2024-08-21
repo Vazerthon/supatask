@@ -3,10 +3,11 @@ import { ThemeMinimal } from "@supabase/auth-ui-shared";
 import { Auth } from "@supabase/auth-ui-react";
 
 import { supabase } from "../../../supabaseClient";
-import useSessionStore from "../../../state/useSessionStore";
+import { useSession, useSetSession } from "../../../state/useSessionStore";
 
 export default function Login() {
-  const { session, setSession } = useSessionStore();
+  const session = useSession();
+  const setSession = useSetSession();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {

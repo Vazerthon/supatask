@@ -11,4 +11,5 @@ const useSessionStore = create<SessionState>((set) => ({
   setSession: (session: Session | null) => set({ session }),
 }));
 
-export default useSessionStore;
+export const useSession = () => useSessionStore((state) => state.session);
+export const useSetSession = () => useSessionStore((state) => state.setSession);
