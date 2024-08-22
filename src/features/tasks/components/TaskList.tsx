@@ -40,14 +40,18 @@ function TaskList() {
         <Stack width="100%">
           <Flex>
             {frequencies.map((frequency) => (
-              <Tab textTransform="capitalize" key={frequency}>
+              <Tab
+                textTransform="capitalize"
+                key={frequency}
+                _first={{ pl: 0 }}
+              >
                 {frequency}
               </Tab>
             ))}
           </Flex>
           <TabPanels>
             {frequencies.map((frequency) => (
-              <TabPanel key={frequency}>
+              <TabPanel key={frequency} p={0}>
                 <Text as="h1" fontSize="large">
                   {frequencyLabel[frequency]}
                   {hiddenByFiltersCount > 0 && (
@@ -57,7 +61,7 @@ function TaskList() {
                     </Text>
                   )}
                 </Text>
-                <UnorderedList>
+                <UnorderedList marginInlineStart={0}>
                   <CheckboxGroup>
                     {filteredTasks.map((task, i) => (
                       <TaskListItem

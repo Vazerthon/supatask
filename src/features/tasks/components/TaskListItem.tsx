@@ -62,47 +62,50 @@ export default function TaskListItem({
       py={2}
       px={1}
       borderRadius="xs"
+      display="flex"
       {...listItemProps}
     >
       <Checkbox
+        ml={2}
+        mr={2}
         isChecked={isChecked}
         onChange={handleCheckboxChange}
-        w="100%"
         sx={{
           // is there a good way to do this? I dunno
           ".chakra-checkbox__label": {
             width: "100%",
           },
         }}
-      >
-        <Grid
-          templateAreas={`
+        aria-label={`mark complete - ${item.title}`}
+      />
+      <Grid
+        w="100%"
+        templateAreas={`
           "task label menu"
           "completion  note note"
           `}
-          gridTemplateColumns="1fr auto auto"
-          gap={2}
-        >
-          <Text gridArea="task" alignContent="center">
-            {item.title}
+        gridTemplateColumns="1fr auto auto"
+        gap={2}
+      >
+        <Text gridArea="task" alignContent="center">
+          {item.title}
+        </Text>
+        {completionLabel && (
+          <Text gridArea="completion" fontSize="sm" color="gray.600">
+            {completionLabel}
           </Text>
-          {completionLabel && (
-            <Text gridArea="completion" fontSize="sm" color="gray.600">
-              {completionLabel}
-            </Text>
-          )}
-          <Text gridArea="note" fontSize="sm" color="gray.600">
-            {item.completionForCurrentPeriod?.note}
-          </Text>
+        )}
+        <Text gridArea="note" fontSize="sm" color="gray.600">
+          {item.completionForCurrentPeriod?.note}
+        </Text>
 
-          <TaskLabelList gridArea="label" task={item} />
-          <TaskListItemMenu
-            gridArea="menu"
-            task={item}
-            completionForCurrentPeriod={item.completionForCurrentPeriod}
-          />
-        </Grid>
-      </Checkbox>
+        <TaskLabelList gridArea="label" task={item} />
+        <TaskListItemMenu
+          gridArea="menu"
+          task={item}
+          completionForCurrentPeriod={item.completionForCurrentPeriod}
+        />
+      </Grid>
     </ListItem>
   );
 }

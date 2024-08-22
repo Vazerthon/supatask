@@ -57,7 +57,11 @@ export default function TaskListItemMenu({
         task={task}
       />
       <Menu>
-        <MenuButton as={IconButton} variant="transparent">
+        <MenuButton
+          as={IconButton}
+          variant="transparent"
+          aria-label={`task menu for ${task.title}`}
+        >
           <Icon as={icons.More} />
         </MenuButton>
         <MenuList>
