@@ -21,9 +21,8 @@ type Sort = "alphabetical" | "completion";
 interface TaskState {
   tasks: Task[];
   setTasks: (tasks: Task[]) => void;
+  updateTask: (task: Task) => void;
   addTask: (task: Task) => void;
-  addCompletionToTask: (taskId: Task["id"], completion: Completion) => void;
-  updateCompletionForTask: (taskId: Task["id"], completion: Completion) => void;
   setTaskLabelsForTask: (taskId: Task["id"], labels: TaskLabel[]) => void;
   frequencies: ["one off", "daily", "weekly", "monthly", "yearly"];
   frequency: Frequency;
@@ -41,28 +40,11 @@ interface TaskState {
 const useTaskStore = create<TaskState>((set) => ({
   tasks: [],
   setTasks: (tasks: Task[]) => set({ tasks }),
+  updateTask: (task) =>
+    set((state) => ({
+      tasks: state.tasks.map((t) => (t.id === task.id ? task : t)),
+    })),
   addTask: (task: Task) => set((state) => ({ tasks: [...state.tasks, task] })),
-  addCompletionToTask: (taskId, completion) =>
-    set((state) => ({
-      tasks: state.tasks.map((task) =>
-        task.id === taskId
-          ? { ...task, completion: [...task.completion, completion] }
-          : task
-      ),
-    })),
-  updateCompletionForTask: (taskId, completion) =>
-    set((state) => ({
-      tasks: state.tasks.map((task) =>
-        task.id === taskId
-          ? {
-              ...task,
-              completion: task.completion.map((c) =>
-                c.id === completion.id ? completion : c
-              ),
-            }
-          : task
-      ),
-    })),
   setTaskLabelsForTask: (taskId, labels) => {
     set((state) => ({
       tasks: state.tasks.map((task) =>
@@ -102,10 +84,53 @@ export const useFrequency = () => useTaskStore((state) => state.frequency);
 export const useFrequencies = () => useTaskStore((state) => state.frequencies);
 export const useSetFrequency = () =>
   useTaskStore((state) => state.setFrequency);
-export const useAddCompletionToTask = () =>
-  useTaskStore((state) => state.addCompletionToTask);
-export const useUpdateCompletionForTask = () =>
-  useTaskStore((state) => state.updateCompletionForTask);
+
+export const useAddCompletionToTask = () => {
+  const updateTask = useTaskStore((state) => state.updateTask);
+  const frequencyPeriod = useTaskStore((state) => state.frequencyPeriod);
+
+  return useCallback(
+    (taskId: Task["id"], completion: Completion) => {
+      const task = useTaskStore.getState().tasks.find((t) => t.id === taskId);
+      if (!task) {
+        return;
+      }
+      updateTask({
+        ...task,
+        completion: [...task.completion, completion],
+        completionForCurrentPeriod:
+          completion.period === frequencyPeriod[task.frequency]
+            ? completion
+            : task.completionForCurrentPeriod,
+      });
+    },
+    [updateTask, frequencyPeriod]
+  );
+};
+export const useUpdateCompletionForTask = () => {
+  const updateTask = useTaskStore((state) => state.updateTask);
+  const frequencyPeriod = useTaskStore((state) => state.frequencyPeriod);
+
+  return useCallback(
+    (taskId: Task["id"], completion: Completion) => {
+      const task = useTaskStore.getState().tasks.find((t) => t.id === taskId);
+      if (!task) {
+        return;
+      }
+      updateTask({
+        ...task,
+        completion: task.completion.map((c) =>
+          c.id === completion.id ? completion : c
+        ),
+        completionForCurrentPeriod:
+          completion.period === frequencyPeriod[task.frequency]
+            ? completion
+            : task.completionForCurrentPeriod,
+      });
+    },
+    [updateTask, frequencyPeriod]
+  );
+};
 
 export const useFrequencyLabel = () =>
   useTaskStore((state) => state.frequencyLabel);
