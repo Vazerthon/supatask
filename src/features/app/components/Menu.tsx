@@ -15,6 +15,7 @@ import Logout from "./Logout";
 import LabelList from "../../labels/LabelList";
 import CreateLabel from "../../labels/CreateLabel";
 import icons from "../../../icons";
+import FilterCompletedTasksToggle from "../../tasks/FilterCompletedTasksToggle";
 
 export default function Menu() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -45,6 +46,8 @@ export default function Menu() {
               <LabelList />
               <Box as="hr" m={4} />
               <CreateLabel />
+              <Box as="hr" m={4} />
+              <FilterCompletedTasksToggle />
             </Flex>
           </DrawerBody>
           <DrawerFooter>

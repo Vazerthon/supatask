@@ -35,6 +35,8 @@ interface TaskState {
   frequencyLabel: Record<Frequency, string>;
   deleteTask: (taskId: Task["id"]) => void;
   sortTasksBy: Sort;
+  hideCompleted: boolean;
+  setHideCompleted: (hideCompleted: boolean) => void;
 }
 
 const useTaskStore = create<TaskState>((set) => ({
@@ -78,12 +80,18 @@ const useTaskStore = create<TaskState>((set) => ({
       tasks: state.tasks.filter((task) => task.id !== taskId),
     })),
   sortTasksBy: "completion",
+  hideCompleted: false,
+  setHideCompleted: (hideCompleted) => set({ hideCompleted }),
 }));
 
 export const useFrequency = () => useTaskStore((state) => state.frequency);
 export const useFrequencies = () => useTaskStore((state) => state.frequencies);
 export const useSetFrequency = () =>
   useTaskStore((state) => state.setFrequency);
+export const useHideCompleted = () =>
+  useTaskStore((state) => state.hideCompleted);
+export const useSetHideCompleted = () =>
+  useTaskStore((state) => state.setHideCompleted);
 
 export const useAddCompletionToTask = () => {
   const updateTask = useTaskStore((state) => state.updateTask);
@@ -199,9 +207,13 @@ const sortingFunctions = {
 
 export const useTasksList = () => {
   const tasks = useTaskStore((state) => state.tasks);
+  const hideCompleted = useTaskStore((state) => state.hideCompleted);
 
   const sortTasksBy = useTaskStore((state) => state.sortTasksBy);
-  return sortingFunctions[sortTasksBy](tasks);
+  const sortedTasks = sortingFunctions[sortTasksBy](tasks);
+  return hideCompleted
+    ? sortedTasks.filter((t) => !t.completionForCurrentPeriod?.complete)
+    : sortedTasks;
 };
 
 export function useTasksApi() {
