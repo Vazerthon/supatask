@@ -17,22 +17,19 @@ import {
   useSetFrequency,
 } from "../useTaskStore";
 import TaskListItem from "./TaskListItem";
-import useSharedState from "../../useSharedState";
+
+import { useLabelsAsDict } from "../../labels/useLabelStore";
 
 function TaskList() {
   const frequencies = useFrequencies();
   const frequencyLabel = useFrequencyLabel();
   const setFrequency = useSetFrequency();
-  const tasks = useTasksList();
-
-  const { filteredTasks } = useSharedState();
+  const labelsDictionary = useLabelsAsDict();
+  const { tasks, hiddenCount } = useTasksList(labelsDictionary);
 
   const handleTabChange = (index: number) => {
     setFrequency(frequencies[index]);
   };
-
-  const totalTasksCount = tasks.length;
-  const hiddenByFiltersCount = totalTasksCount - filteredTasks.length;
 
   return (
     <Tabs onChange={handleTabChange}>
@@ -52,18 +49,18 @@ function TaskList() {
           <TabPanels>
             {frequencies.map((frequency) => (
               <TabPanel key={frequency} p={0}>
-                <Text as="h1" fontSize="large">
+                <Text as="h1" fontSize="large" mb={4} mt={2}>
                   {frequencyLabel[frequency]}
-                  {hiddenByFiltersCount > 0 && (
+                  {hiddenCount > 0 && (
                     <Text as="span" fontSize="small" ml={2}>
-                      ({hiddenByFiltersCount} task
-                      {hiddenByFiltersCount === 1 ? "" : "s"} hidden)
+                      ({hiddenCount} task
+                      {hiddenCount === 1 ? "" : "s"} hidden)
                     </Text>
                   )}
                 </Text>
                 <UnorderedList marginInlineStart={0}>
                   <CheckboxGroup>
-                    {filteredTasks.map((task, i) => (
+                    {tasks.map((task, i) => (
                       <TaskListItem
                         item={task}
                         key={task.id}
@@ -74,7 +71,7 @@ function TaskList() {
                       />
                     ))}
                   </CheckboxGroup>
-                  {filteredTasks.length === 0 && (
+                  {tasks.length === 0 && (
                     <Flex
                       width="100%"
                       minHeight="70vh"

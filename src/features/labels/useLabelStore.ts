@@ -60,6 +60,11 @@ export const useEnableAllLabels = () =>
 export const useDisableAllLabels = () =>
   useLabelStore((state) => state.disableAll);
 
+export const useLabelsAsDict = (): Record<Label["id"], Label> => {
+  const labels = useLabelList();
+  return labels.reduce((acc, label) => ({ ...acc, [label.id]: label }), {});
+};
+
 export function useLabelsApi() {
   const addLabel = useCallback(async (text: string, color: string) => {
     await supabase

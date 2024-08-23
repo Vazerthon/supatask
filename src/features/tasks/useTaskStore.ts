@@ -182,22 +182,18 @@ export const useSetTasks = () => {
   return setTasks;
 };
 
-const sortTasksByCompletion = (tasks: Task[]): Task[] => {
-  return tasks.sort((a, b) => {
-    if (
-      a.completionForCurrentPeriod?.complete ===
-      b.completionForCurrentPeriod?.complete
-    ) {
-      return a.title.localeCompare(b.title);
-    }
-    return a.completionForCurrentPeriod?.complete ? 1 : -1;
-  });
+const sortTasksByCompletion = (a: Task, b: Task) => {
+  if (
+    a.completionForCurrentPeriod?.complete ===
+    b.completionForCurrentPeriod?.complete
+  ) {
+    return a.title.localeCompare(b.title);
+  }
+  return a.completionForCurrentPeriod?.complete ? 1 : -1;
 };
 
-const sortTasksByAlphabetical = (tasks: Task[]): Task[] => {
-  return tasks.sort((a, b) => {
-    return a.title.localeCompare(b.title);
-  });
+const sortTasksByAlphabetical = (a: Task, b: Task) => {
+  return a.title.localeCompare(b.title);
 };
 
 const sortingFunctions = {
@@ -205,15 +201,40 @@ const sortingFunctions = {
   completion: sortTasksByCompletion,
 };
 
-export const useTasksList = () => {
+const filterCompleted = (task: Task) =>
+  !task.completionForCurrentPeriod?.complete;
+
+const makeIncludesRequiredLabelFilter =
+  (labelsFilter: Record<Label["id"], Label>) => (task: Task) => {
+    const unlabelledEnabled = labelsFilter?.["unlabelled"]?.enabled;
+    const taskHasNoLabels = task.task_label.length === 0;
+    return (
+      (unlabelledEnabled && taskHasNoLabels) ||
+      task.task_label.some((tl) => {
+        return labelsFilter?.[tl.label_id]?.enabled;
+      })
+    );
+  };
+
+export const useTasksList = (labelsFilter: Record<Label["id"], Label>) => {
   const tasks = useTaskStore((state) => state.tasks);
   const hideCompleted = useTaskStore((state) => state.hideCompleted);
-
   const sortTasksBy = useTaskStore((state) => state.sortTasksBy);
-  const sortedTasks = sortingFunctions[sortTasksBy](tasks);
-  return hideCompleted
-    ? sortedTasks.filter((t) => !t.completionForCurrentPeriod?.complete)
-    : sortedTasks;
+
+  const sorter = sortingFunctions[sortTasksBy];
+  const completedFilter = hideCompleted ? filterCompleted : () => true;
+  const includesRequiredLabelFilter =
+    makeIncludesRequiredLabelFilter(labelsFilter);
+
+  const filteredTasks = tasks
+    .sort(sorter)
+    .filter(completedFilter)
+    .filter(includesRequiredLabelFilter);
+
+  return {
+    tasks: filteredTasks,
+    hiddenCount: tasks.length - filteredTasks.length,
+  };
 };
 
 export function useTasksApi() {
