@@ -13,7 +13,9 @@ export default function LabelBadge({ label, ...badgeProps }: LabelBadgeProps) {
       minW={5}
       minH={5}
       borderRadius="50%"
-      backgroundColor={label.color_hex}
+      borderColor={label.color_hex}
+      borderWidth={2}
+      backgroundColor="white"
       alignSelf="center"
       display="flex"
       justifyContent="center"
@@ -21,9 +23,7 @@ export default function LabelBadge({ label, ...badgeProps }: LabelBadgeProps) {
       fontSize="xs"
       {...badgeProps}
     >
-      <Text color={label.color_hex} filter="invert(100%)">
-        {label.text[0]}
-      </Text>
+      <Text fontWeight="bold">{label.text[0]}</Text>
     </Badge>
   );
 }
