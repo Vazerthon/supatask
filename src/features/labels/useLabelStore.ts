@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { useCallback } from "react";
+import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
+import { useCallback, useEffect } from "react";
 import { supabase } from "../../supabaseClient";
 import { Label } from "../../types/types";
 import constants from "../../constants";
@@ -75,4 +76,51 @@ export function useLabelsApi() {
   return {
     addLabel,
   };
+}
+
+export function useSubscribeToLabelEvents() {
+  const setLabels = useSetLabels();
+  const addLabel = useAddLabel();
+
+  useEffect(() => {
+    const getLabels = () => {
+      supabase
+        .from(constants.LABEL_TABLE)
+        .select()
+        .then(({ data }) => {
+          setLabels(data || []);
+        });
+    };
+    getLabels();
+  }, [setLabels]);
+
+  useEffect(() => {
+    const handleLabelInserts = (
+      payload: RealtimePostgresChangesPayload<Label>
+    ) => {
+      if (payload.eventType === "INSERT" && payload.new) {
+        addLabel({ ...payload.new, enabled: true });
+      }
+    };
+    const channel = "label-changes";
+    const subscribeToLabels = () => {
+      supabase
+        .channel(channel)
+        .on(
+          "postgres_changes",
+          {
+            event: "INSERT",
+            schema: "public",
+            table: constants.LABEL_TABLE,
+          },
+          handleLabelInserts
+        )
+        .subscribe();
+    };
+    const unsubscribe = () => {
+      supabase.channel(channel).unsubscribe();
+    };
+    subscribeToLabels();
+    return unsubscribe;
+  }, [addLabel, setLabels]);
 }
