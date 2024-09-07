@@ -1,5 +1,6 @@
 import {
   Checkbox,
+  Flex,
   Grid,
   ListItem,
   ListItemProps,
@@ -78,34 +79,46 @@ export default function TaskListItem({
         }}
         aria-label={`mark complete - ${item.title}`}
       />
-      <Grid
-        w="100%"
-        templateAreas={`
-          "task label menu"
-          "completion  note note"
-          `}
-        gridTemplateColumns="1fr auto auto"
-        gap={2}
-      >
-        <Text gridArea="task" alignContent="center">
-          {item.title}
-        </Text>
-        {completionLabel && (
-          <Text gridArea="completion" fontSize="sm" color="gray.600">
-            {completionLabel}
+      <Flex flexDirection="column" w="100%">
+        <Grid
+          w="100%"
+          templateAreas={`"task label-menu"`}
+          gridTemplateColumns="1fr auto"
+          gap={2}
+        >
+          <Text gridArea="task" alignContent="center" noOfLines={2}>
+            {item.title}
           </Text>
-        )}
-        <Text gridArea="note" fontSize="sm" color="gray.600">
-          {item.completionForCurrentPeriod?.note}
-        </Text>
 
-        <TaskLabelList gridArea="label" task={item} />
-        <TaskListItemMenu
-          gridArea="menu"
-          task={item}
-          completionForCurrentPeriod={item.completionForCurrentPeriod}
-        />
-      </Grid>
+          <Flex gridArea="label-menu">
+            <TaskLabelList task={item} />
+            <TaskListItemMenu
+              task={item}
+              completionForCurrentPeriod={item.completionForCurrentPeriod}
+            />
+          </Flex>
+        </Grid>
+        <Grid
+          w="100%"
+          templateAreas={`"completion note"`}
+          gridTemplateColumns="auto auto"
+        >
+          {completionLabel && (
+            <Text gridArea="completion" fontSize="sm" color="gray.600" mr={8}>
+              {completionLabel}
+            </Text>
+          )}
+          <Text
+            noOfLines={1}
+            gridArea="note"
+            justifySelf="end"
+            fontSize="sm"
+            color="gray.600"
+          >
+            {item.completionForCurrentPeriod?.note}
+          </Text>
+        </Grid>
+      </Flex>
     </ListItem>
   );
 }
