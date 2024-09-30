@@ -9,17 +9,20 @@ import {
   Flex,
   Box,
   Icon,
+  Text,
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import Logout from "./Logout";
 import LabelList from "../../labels/LabelList";
-import CreateLabel from "../../labels/CreateLabel";
+import LabelEditor from "../../labels/LabelEditor";
 import icons from "../../../icons";
 import FilterCompletedTasksToggle from "../../tasks/FilterCompletedTasksToggle";
 
 export default function Menu() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = useRef(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const labelEditorRef = useRef<HTMLInputElement>(null);
+
   return (
     <>
       <IconButton
@@ -45,7 +48,10 @@ export default function Menu() {
             <Flex flexDirection="column">
               <LabelList />
               <Box as="hr" m={4} />
-              <CreateLabel />
+              <Text fontSize="lg" fontWeight="bold" mb={2}>
+                Create a new label
+              </Text>
+              <LabelEditor initialFocusRef={labelEditorRef} />
               <Box as="hr" m={4} />
               <FilterCompletedTasksToggle />
             </Flex>

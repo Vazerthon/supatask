@@ -1,14 +1,21 @@
-import { Input, Flex, IconButton, Text, Icon } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { Input, Flex, IconButton, Icon } from "@chakra-ui/react";
+import { useState } from "react";
 import icons from "../../icons";
 import { useLabelsApi } from "./useLabelStore";
+import { Label } from "../../types/types";
 
-export default function CreateLabel() {
-  const { addLabel } = useLabelsApi();
-  const [inputText, setInputText] = useState("");
-  const [inputColor, setInputColor] = useState("#000000");
+interface LabelEditorProps {
+  label?: Label;
+  initialFocusRef: React.RefObject<HTMLInputElement>;
+}
 
-  const initialFocusRef = useRef(null);
+export default function LabelEditor({
+  label,
+  initialFocusRef,
+}: LabelEditorProps) {
+  const { upsertLabel } = useLabelsApi();
+  const [inputText, setInputText] = useState(label?.text || "");
+  const [inputColor, setInputColor] = useState(label?.color_hex || "#000000");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,7 +23,7 @@ export default function CreateLabel() {
     if (!text) {
       return;
     }
-    await addLabel(text, inputColor);
+    await upsertLabel(text, inputColor, label?.id);
     setInputText("");
     setInputColor("#000000");
   };
@@ -25,16 +32,13 @@ export default function CreateLabel() {
     <>
       <form onSubmit={handleSubmit}>
         <Flex flexDirection="column">
-          <Text fontSize="lg" fontWeight="bold" mb={2}>
-            Create a new label
-          </Text>
           <Input
             ref={initialFocusRef}
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             name="title"
             id="labelTitleInput"
-            placeholder="New label title"
+            placeholder="Label title"
             mb={2}
           />
           <Input
@@ -50,7 +54,7 @@ export default function CreateLabel() {
           <IconButton
             type="submit"
             mt={2}
-            aria-label="Submit new label"
+            aria-label="Submit label"
             isDisabled={!inputText.trim()}
           >
             <Icon as={icons.Check} />

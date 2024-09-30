@@ -67,14 +67,17 @@ export const useLabelsAsDict = (): Record<Label["id"], Label> => {
 };
 
 export function useLabelsApi() {
-  const addLabel = useCallback(async (text: string, color: string) => {
-    await supabase
-      .from(constants.LABEL_TABLE)
-      .insert({ text, color_hex: color });
-  }, []);
+  const upsertLabel = useCallback(
+    async (text: string, color: string, id?: string) => {
+      await supabase
+        .from(constants.LABEL_TABLE)
+        .upsert({ text, color_hex: color, id });
+    },
+    []
+  );
 
   return {
-    addLabel,
+    upsertLabel,
   };
 }
 

@@ -9,6 +9,7 @@ import {
 import { useEnableLabel, useDisableLabel } from "../useLabelStore";
 import { Label } from "../../../types/types";
 import LabelBadge from "./LabelBadge";
+import LabelMenu from "./LabelMenu";
 
 interface LabelListItemProps extends ListItemProps {
   label: Label;
@@ -49,6 +50,7 @@ export default function LabelListItem({
 
           {!hideBadge && (
             <Flex flexDirection="row-reverse">
+              <LabelMenu label={label} />
               <LabelBadge label={label} />
             </Flex>
           )}
