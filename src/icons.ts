@@ -1,8 +1,6 @@
-import { LuMoreVertical } from "react-icons/lu";
-import { LuMenu } from "react-icons/lu";
-import { LuPlus } from "react-icons/lu";
-import { LuCheck } from "react-icons/lu";
-import { LuX } from "react-icons/lu";
+import { LuMoreVertical, LuMenu, LuPlus, LuCheck, LuX } from "react-icons/lu";
+
+import { FaExclamation } from "react-icons/fa";
 
 export default {
   More: LuMoreVertical,
@@ -10,4 +8,5 @@ export default {
   Plus: LuPlus,
   Check: LuCheck,
   Delete: LuX,
+  Warning: FaExclamation,
 };

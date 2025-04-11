@@ -2,6 +2,7 @@ import {
   Checkbox,
   Flex,
   Grid,
+  Icon,
   ListItem,
   ListItemProps,
   Text,
@@ -14,7 +15,9 @@ import {
   formatShortDate,
   maxDate,
 } from "../../../date-helpers";
-import { useTasksApi } from "../useTaskStore";
+import { useTasksApi, type Frequency } from "../useTaskStore";
+import { useMemo } from "react";
+import icons from "../../../icons";
 
 interface TaskListItemProps extends ListItemProps {
   item: Task;
@@ -28,24 +31,31 @@ export default function TaskListItem({
 
   const isChecked = item.completionForCurrentPeriod?.complete || false;
   const completedAtDateString = item.completionForCurrentPeriod?.completed_at;
+
+  const itemIsCompleteThisPeriod =
+    !!item.completionForCurrentPeriod?.completed_at;
+
   const completionString =
     completedAtDateString &&
     `completed: ${formatShortDate(completedAtDateString)}`;
 
-  const distanceFromLastCompletion = () => {
+  const distanceFromLastCompletion = useMemo(() => {
     const completionDates = item.completion
       .map((c) => (c.complete ? c.completed_at : null))
       .filter((d) => d !== null);
     const lastCompletionDate = maxDate(completionDates);
-    const distance = lastCompletionDate
-      ? countDaysToNow(lastCompletionDate)
-      : null;
-    return distance && distance > 0
-      ? `last completed ${distance} day${distance === 1 ? "" : "s"} ago`
-      : null;
-  };
+    return lastCompletionDate ? countDaysToNow(lastCompletionDate) : null;
+  }, [item.completion]);
 
-  const completionLabel = completionString || distanceFromLastCompletion();
+  const distanceFromLastCompletionLabel = useMemo(() => {
+    return distanceFromLastCompletion && distanceFromLastCompletion > 0
+      ? `last completed ${distanceFromLastCompletion} day${
+          distanceFromLastCompletion === 1 ? "" : "s"
+        } ago`
+      : null;
+  }, [distanceFromLastCompletion]);
+
+  const completionLabel = completionString || distanceFromLastCompletionLabel;
 
   const handleCheckboxChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -56,6 +66,63 @@ export default function TaskListItem({
       item.completionForCurrentPeriod
     );
   };
+
+  const completionLabelColor = useMemo(() => {
+    if (itemIsCompleteThisPeriod || !distanceFromLastCompletion) {
+      return {
+        color: "gray.600",
+        showIcon: false,
+      };
+    }
+
+    const thresholds: Record<Frequency, number> = {
+      "one off": 0,
+      daily: 1,
+      weekly: 7,
+      monthly: 30,
+      yearly: 365,
+    };
+
+    const warningThresholds: Record<Frequency, number> = {
+      "one off": 0,
+      daily: 1,
+      weekly: 5,
+      monthly: 25,
+      yearly: 300,
+    };
+
+    const frequency = item.frequency;
+    const distance = distanceFromLastCompletion;
+
+    if (distance < warningThresholds[frequency]) {
+      return {
+        color: "gray.600",
+        showIcon: false,
+      };
+    }
+
+    if (
+      distance > warningThresholds[frequency] &&
+      distance < thresholds[frequency]
+    ) {
+      return {
+        color: "orange.700",
+        showIcon: false,
+      };
+    }
+
+    if (distance > thresholds[frequency]) {
+      return {
+        color: "red.700",
+        showIcon: true,
+      };
+    }
+
+    return {
+      color: "gray.600",
+      showIcon: false,
+    };
+  }, [itemIsCompleteThisPeriod, distanceFromLastCompletion, item.frequency]);
 
   return (
     <ListItem
@@ -104,8 +171,18 @@ export default function TaskListItem({
           gridTemplateColumns="auto auto"
         >
           {completionLabel && (
-            <Text gridArea="completion" fontSize="sm" color="gray.600" mr={8}>
+            <Text
+              gridArea="completion"
+              fontSize="sm"
+              color={completionLabelColor.color}
+              mr={8}
+              display="flex"
+              alignItems="center"
+            >
               {completionLabel}
+              {completionLabelColor.showIcon && (
+                <Icon as={icons.Warning} ml={1} />
+              )}
             </Text>
           )}
           <Text

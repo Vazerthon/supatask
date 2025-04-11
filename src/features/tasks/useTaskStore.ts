@@ -16,7 +16,7 @@ import {
   formatMonthOfYear,
   formatYear,
 } from "../../date-helpers";
-type Frequency = "one off" | "daily" | "weekly" | "monthly" | "yearly";
+export type Frequency = "one off" | "daily" | "weekly" | "monthly" | "yearly";
 type Sort = "alphabetical" | "completion";
 
 interface TaskState {
