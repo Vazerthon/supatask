@@ -1,4 +1,11 @@
-import { LuMoreVertical, LuMenu, LuPlus, LuCheck, LuX } from "react-icons/lu";
+import {
+  LuMoreVertical,
+  LuMenu,
+  LuPlus,
+  LuCheck,
+  LuX,
+  LuDownload,
+} from "react-icons/lu";
 
 import { FaExclamation } from "react-icons/fa";
 
@@ -9,4 +16,5 @@ export default {
   Check: LuCheck,
   Delete: LuX,
   Warning: FaExclamation,
+  Download: LuDownload,
 };

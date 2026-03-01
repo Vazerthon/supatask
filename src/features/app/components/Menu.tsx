@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import Logout from "./Logout";
+import ExportData from "./ExportData";
 import LabelList from "../../labels/LabelList";
 import CreateLabel from "../../labels/CreateLabel";
 import icons from "../../../icons";
@@ -50,7 +51,8 @@ export default function Menu() {
               <FilterCompletedTasksToggle />
             </Flex>
           </DrawerBody>
-          <DrawerFooter>
+          <DrawerFooter display="flex" justifyContent="space-between" gap={2}>
+            <ExportData />
             <Logout />
           </DrawerFooter>
         </DrawerContent>
